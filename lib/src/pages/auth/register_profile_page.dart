@@ -1,9 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:homehealth/src/bloc/register_profile_bloc.dart';
+import 'package:homehealth/src/providers/country_provider.dart';
 import 'package:homehealth/src/providers/provider.dart';
 import 'package:homehealth/src/widgets/background.dart';
 
-class RegisterProfilePage extends StatelessWidget {
+class RegisterProfilePage extends StatefulWidget {
+
+  @override
+  _RegisterProfilePageState createState() => _RegisterProfilePageState();
+}
+
+class _RegisterProfilePageState extends State<RegisterProfilePage> {
+  final countryProvider = new CountryProvider();
+
+  List countries;
+
+  @override
+  void initState() {
+    super.initState();
+    countryProvider.getCountriesAndCities()
+    .then((result){
+      print("result ---> $result");
+      this.countries = result.data;
+    })
+    .catchError((error){
+      print(error);
+      
+    })
+    ;
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -11,16 +37,19 @@ class RegisterProfilePage extends StatelessWidget {
     return Scaffold(
       body: Background(
         child: SingleChildScrollView(
-            child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-                width: size.width * 0.3,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                width: size.width * 0.2,
                 margin: EdgeInsets.only(
-                    left: size.width * 0.5, bottom: size.height * 0.03),
+                  left: size.width * 0.5, 
+                  bottom: size.height * 0.03
+                ),
                 child: Image(
                   image: AssetImage('assets/icons/logo.png'),
-                )),
+                )
+              ),
             Container(
               margin: EdgeInsets.symmetric(horizontal: size.width * 0.05),
               child: Text(
@@ -33,7 +62,7 @@ class RegisterProfilePage extends StatelessWidget {
               ),
             ),
             SizedBox(
-              height: size.height * 0.03,
+              height: size.height * 0.01,
             ),
             Container(
               margin: EdgeInsets.symmetric(vertical: 10),
@@ -64,8 +93,8 @@ class RegisterProfilePage extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
               width: size.width * 0.8,
               decoration: BoxDecoration(
-                  color: Colors.grey.shade100,
-                  borderRadius: BorderRadius.circular(29)),
+                color: Colors.grey.shade100,
+                borderRadius: BorderRadius.circular(29)),
               child: StreamBuilder(
                 stream: bloc.lastNameStream,
                 builder: (context, snapshot) {
@@ -87,8 +116,8 @@ class RegisterProfilePage extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
               width: size.width * 0.8,
               decoration: BoxDecoration(
-                  color: Colors.grey.shade100,
-                  borderRadius: BorderRadius.circular(29)),
+                color: Colors.grey.shade100,
+                borderRadius: BorderRadius.circular(29)),
               child: StreamBuilder(
                 stream: bloc.documentNumberStream,
                 builder: (context, snapshot) {
@@ -110,8 +139,8 @@ class RegisterProfilePage extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
               width: size.width * 0.8,
               decoration: BoxDecoration(
-                  color: Colors.grey.shade100,
-                  borderRadius: BorderRadius.circular(29)),
+                color: Colors.grey.shade100,
+                borderRadius: BorderRadius.circular(29)),
               child: StreamBuilder(
                 stream: bloc.phoneStream,
                 builder: (context, snapshot) {
@@ -133,13 +162,12 @@ class RegisterProfilePage extends StatelessWidget {
                 padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
                 width: size.width * 0.8,
                 decoration: BoxDecoration(
-                    color: Colors.grey.shade100,
-                    borderRadius: BorderRadius.circular(29)),
+                  color: Colors.grey.shade100,
+                  borderRadius: BorderRadius.circular(29)),
                 child: StreamBuilder(
                   stream: bloc.birthdateStream,
                   builder: (context, snapshot) {
-                    return TextField(
-                      
+                    return TextField(  
                       onChanged: (value) => {},
                       keyboardType: TextInputType.text,
                       decoration: InputDecoration(
@@ -177,6 +205,10 @@ class RegisterProfilePage extends StatelessWidget {
                   )
                 );
               }
+            ),
+            ElevatedButton(
+              onPressed: () => verPaises(), 
+              child: Text("Ver Paises")
             )
           ],
         )),
@@ -194,5 +226,10 @@ class RegisterProfilePage extends StatelessWidget {
     if (picked != null) {
       bloc.changeBirthdate(picked.toString());
     }
+  }
+
+  verPaises() {
+    countryProvider.getCountriesAndCities();
+
   }
 }
