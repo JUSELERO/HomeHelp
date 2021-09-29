@@ -12,17 +12,11 @@ class RegisterProfileBloc with Validators {
   final _phoneController = BehaviorSubject<String>();
   final _birthdateController = BehaviorSubject<String>();
 
-  Stream<String> get nameStream =>
-    _nameController.stream.transform(validateName);
-  
-  Stream<String> get lastNameStream =>
-    _lastnameController.stream.transform(validateLastname);
-
-  Stream<String> get phoneStream =>
-    _phoneController.stream.transform(validatePhone);
-
-  Stream<String> get documentNumberStream => _documentNumberController.stream;
-  Stream<String> get birthdateStream => _birthdateController.stream;
+  Stream<String> get nameStream => _nameController.stream.transform(validateName);
+  Stream<String> get lastNameStream => _lastnameController.stream.transform(validateLastname);
+  Stream<String> get phoneStream => _phoneController.stream.transform(validatePhone);
+  Stream<String> get documentNumberStream => _documentNumberController.stream.transform(validateDocumentNumber);
+  Stream<String> get birthdateStream => _birthdateController.stream.transform(validateBirthDate);
 
   Function(String) get changeName => _nameController.sink.add;
   Function(String) get changeLastName => _lastnameController.sink.add;
@@ -30,18 +24,20 @@ class RegisterProfileBloc with Validators {
   Function(String) get changePhone => _phoneController.sink.add;
   Function(String) get changeBirthdate => _birthdateController.sink.add;
 
+  Stream<bool> get formValidStream => Rx.combineLatest5(
+      nameStream,
+      lastNameStream,
+      phoneStream,
+      documentNumberStream,
+      birthdateStream,
+      (a, b,c,d,e) => true,
+    );
+
   String get name => _nameController.value;
   String get lastname => _lastnameController.value;
   String get documentNumber => _documentNumberController.value;
   String get phone => _phoneController.value;
   String get birthdate => _birthdateController.value;
-
-  Stream<bool> get formValidStream => Rx.combineLatest3(
-      nameStream,
-      lastNameStream,
-      phoneStream,
-      (a, b,c) => true,
-    );
   
   dispose() {
     _nameController.close();

@@ -1,39 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:homehealth/src/bloc/register_profile_bloc.dart';
+import 'package:homehealth/src/models/profile_model.dart';
 import 'package:homehealth/src/providers/country_provider.dart';
 import 'package:homehealth/src/providers/provider.dart';
+import 'package:homehealth/src/providers/usuario_provider.dart';
 import 'package:homehealth/src/widgets/background.dart';
+import 'package:intl/intl.dart';
 
-class RegisterProfilePage extends StatefulWidget {
-
-  @override
-  _RegisterProfilePageState createState() => _RegisterProfilePageState();
-}
-
-class _RegisterProfilePageState extends State<RegisterProfilePage> {
+class RegisterProfilePage extends StatelessWidget {
   final countryProvider = new CountryProvider();
-
-  List countries;
-
-  @override
-  void initState() {
-    super.initState();
-    countryProvider.getCountriesAndCities()
-    .then((result){
-      print("result ---> $result");
-      this.countries = result.data;
-    })
-    .catchError((error){
-      print(error);
-      
-    })
-    ;
-  }
+  final _profileModel = new Profile();
+  final _usuarioProvider = new UsuarioProvider();
+  final TextEditingController _textEditingController = new TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     final bloc = Provider.registerProfile(context);
+
     return Scaffold(
       body: Background(
         child: SingleChildScrollView(
@@ -99,13 +83,13 @@ class _RegisterProfilePageState extends State<RegisterProfilePage> {
                 stream: bloc.lastNameStream,
                 builder: (context, snapshot) {
                   return TextField(
-                    onChanged: (value) => bloc.changeLastName,
+                    onChanged: (value) => bloc.changeLastName(value),
                     keyboardType: TextInputType.name,
                     decoration: InputDecoration(
                       icon: Icon(Icons.person_outline_sharp, color: Colors.black12),
                       hintText: "Apellido",
                       border: InputBorder.none,
-                      errorText: snapshot.error
+                      errorText: snapshot.error,
                     ),
                   );
                 }
@@ -145,7 +129,7 @@ class _RegisterProfilePageState extends State<RegisterProfilePage> {
                 stream: bloc.phoneStream,
                 builder: (context, snapshot) {
                   return TextField(
-                    onChanged: (value) => bloc.changePhone,
+                    onChanged: (value) => bloc.changePhone(value),
                     keyboardType: TextInputType.phone,
                     decoration: InputDecoration(
                       icon: Icon(Icons.phone, color: Colors.black12),
@@ -169,13 +153,14 @@ class _RegisterProfilePageState extends State<RegisterProfilePage> {
                   builder: (context, snapshot) {
                     return TextField(  
                       onChanged: (value) => {},
+                      controller: _textEditingController,
                       keyboardType: TextInputType.text,
                       decoration: InputDecoration(
                         icon: Icon(Icons.calendar_today, color: Colors.black12),
                         hintText: "Fecha de Nacimiento",
                         border: InputBorder.none,
-                        counterText: snapshot.data
                       ),
+
                       onTap: () {
                         FocusScope.of(context).requestFocus(new FocusNode());
                         _selectDate(context,bloc);
@@ -184,11 +169,11 @@ class _RegisterProfilePageState extends State<RegisterProfilePage> {
                   }
                 )),
             SizedBox(height: size.height * 0.02),
-            StreamBuilder<Object>(
+            StreamBuilder(
               stream: bloc.formValidStream,
               builder: (context, snapshot) {
                 return ElevatedButton(
-                  onPressed: snapshot.hasData ? () => {} : null,
+                  onPressed: snapshot.hasData ? () => registerProfileUser(bloc) : null,
                   child: Container(
                     child: Text(
                       'Guardar',
@@ -206,10 +191,6 @@ class _RegisterProfilePageState extends State<RegisterProfilePage> {
                 );
               }
             ),
-            ElevatedButton(
-              onPressed: () => verPaises(), 
-              child: Text("Ver Paises")
-            )
           ],
         )),
       ),
@@ -218,18 +199,26 @@ class _RegisterProfilePageState extends State<RegisterProfilePage> {
 
   void _selectDate(BuildContext context,RegisterProfileBloc bloc) async {
     DateTime picked = await showDatePicker(
-        context: context,
-        initialDate: new DateTime.now(),
-        firstDate: new DateTime(1900),
-        lastDate: new DateTime(2025),
-        locale: Locale('es', 'ES'));
+      context: context,
+      initialDate: new DateTime.now(),
+      firstDate: new DateTime(1900),
+      lastDate: new DateTime(2025),
+      locale: Locale('es', 'ES')
+    );
     if (picked != null) {
+      final formatDate = new DateFormat("dd-MM-yyyy");
       bloc.changeBirthdate(picked.toString());
+      _textEditingController.text = formatDate.format(picked);
     }
   }
 
-  verPaises() {
-    countryProvider.getCountriesAndCities();
-
+  registerProfileUser(RegisterProfileBloc bloc){
+    _profileModel.firstname = bloc.name;
+    _profileModel.lastname = bloc.lastname;
+    _profileModel.documentNumber = bloc.documentNumber;
+    _profileModel.phone = bloc.phone;
+    _profileModel.birthdate = bloc.birthdate;
+    _usuarioProvider.registerProfileUser(_profileModel);
+    
   }
 }

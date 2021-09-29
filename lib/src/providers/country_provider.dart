@@ -2,9 +2,24 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class CountryProvider{
-  final _url = "https://countriesnow.space/api/v0.1/countries";
-  // listado de paises https://restcountries.com/v2/all
-  // listado de ciudades https://countriesnow.space/api/v0.1/countries/cities
+  final _urlPaises = "https://restcountries.com/v2/all";
+  final _urlCities = "https://countriesnow.space/api/v0.1/countries/cities";
+
+  List countries = [];
+  getCountries() async{
+    final resp = await http.get(Uri.parse(_urlPaises));
+    List<dynamic> result = json.decode(resp.body);
+    result.forEach((country) { 
+      print("country --> $country");
+      final countryTemp = {};
+      countryTemp["nameView"] = country["translations"]["es"];
+      countryTemp["nameRequest"] = country["name"];
+      countries.add(countryTemp);
+    });
+    print("countries --> $countries");
+    
+  }
+  /*
   Future<dynamic> getCountriesAndCities()async{
     final resp = await http.get(
       Uri.parse(_url)
@@ -13,5 +28,5 @@ class CountryProvider{
     print("provider result --> $result");
     return result;
   }
-
+  */
 }

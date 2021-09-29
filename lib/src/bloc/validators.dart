@@ -26,32 +26,54 @@ class Validators {
 
   final validateName = StreamTransformer<String,String>.fromHandlers(
     handleData: ( name, sink ) {
-      if( name.length >= 2 ) {
+      if( name.length > 0 ) {
         sink.add(name);
       } else {
-        sink.addError('Ingrese el nombre valido!');
+        print("sink error");
+        sink.addError('Ingrese su nombre!');
       }
     }
   );
 
   final validateLastname = StreamTransformer<String,String>.fromHandlers(
     handleData: ( lastname, sink ) {
-      if( lastname.length >= 2 ) {
+      if( lastname.length > 0 ) {
         sink.add(lastname);
       } else {
-        sink.addError('Ingrese un apellido valido!');
+        sink.addError('Ingrese su apellido!');
       }
     }
   );
 
+
+  final validateDocumentNumber = StreamTransformer<String,String>.fromHandlers(
+    handleData: ( document, sink ) {
+      if( document.length > 6 ) {
+        sink.add(document);
+      } else {
+        sink.addError('Ingrese un número de documento valido!');
+      }
+    }
+  );
+
+
   final validatePhone = StreamTransformer<String,String>.fromHandlers(
     handleData: ( phone, sink ) {
-      if( phone.length == 10 ) {
+      if( phone.length > 6 ) {
         sink.add(phone);
       } else {
         sink.addError('Ingrese un número valido!');
       }
     }
-  );
 
+  );
+  final validateBirthDate = StreamTransformer<String,String>.fromHandlers(
+    handleData: ( birthdate, sink ) {
+      if( birthdate.isNotEmpty ) {
+        sink.add(birthdate);
+      } else {
+        sink.addError('Escoja su fecha de nacimiento!');
+      }
+    }
+  );
 }
