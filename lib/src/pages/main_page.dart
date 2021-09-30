@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:homehealth/src/widgets/background.dart';
 
-class MainCustomerPage extends StatefulWidget {
+class MainPage extends StatefulWidget {
 
   @override
-  _MainCustomerPageState createState() => _MainCustomerPageState();
+  _MainPageState createState() => _MainPageState();
 }
 
-class _MainCustomerPageState extends State<MainCustomerPage> {
+class _MainPageState extends State<MainPage> {
   final List<Widget> _listPages = [
     Text(
       'Index 0: Home',
@@ -34,15 +34,15 @@ class _MainCustomerPageState extends State<MainCustomerPage> {
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            label: 'Home',
+            label: 'Mis Actividades',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.business),
-            label: 'Business',
+            label: 'Actividades',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.school),
-            label: 'School',
+            label: 'Perfil',
           ),
         ],
         onTap: _onItemTapped,

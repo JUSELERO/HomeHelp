@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:homehealth/src/pages/customer/main_customer_page.dart';
+import 'package:homehealth/src/pages/activities_page.dart';
+import 'package:homehealth/src/pages/main_page.dart';
 
 import 'package:homehealth/src/pages/home_page.dart';
 import 'package:homehealth/src/pages/auth/login_page.dart';
 import 'package:homehealth/src/pages/auth/register_page.dart';
 import 'package:homehealth/src/pages/auth/register_profile_page.dart';
+import 'package:homehealth/src/pages/my_activities_page.dart';
 import 'package:homehealth/src/preferencias_usuario/preferencias_usuario.dart';
 import 'package:homehealth/src/providers/provider.dart';
 import 'package:homehealth/src/utils/constants.dart';
@@ -34,7 +36,9 @@ class MyApp extends StatelessWidget {
           'home': (BuildContext context) => HomePage(),
           'registro': (BuildContext context) => RegisterPage(),
           'register-profile': (BuildContext context) => RegisterProfilePage(),
-          'main-customer': (BuildContext context) => MainCustomerPage(),
+          'main': (BuildContext context) => MainPage(),
+          'my-activites':(BuildContext context) => MyActivitiesPage(),
+          'activities':(BuildContext context) => ActivitiesPage(),
         },
         localizationsDelegates: [
           GlobalMaterialLocalizations.delegate,
