@@ -4,11 +4,11 @@
 
 import 'dart:convert';
 
-Profile profileFromJson(String str) => Profile.fromJson(json.decode(str));
+ProfileModel profileFromJson(String str) => ProfileModel.fromJson(json.decode(str));
 
-String profileToJson(Profile data) => json.encode(data.toJson());
+String profileToJson(ProfileModel data) => json.encode(data.toJson());
 
-class Profile {
+class ProfileModel {
     String firstname;
     String lastname;
     String documentNumber;
@@ -19,7 +19,7 @@ class Profile {
     String user;
     String rol;
 
-    Profile({
+    ProfileModel({
       this.firstname,
       this.lastname,
       this.documentNumber,
@@ -31,7 +31,7 @@ class Profile {
       this.rol,
     });
 
-    factory Profile.fromJson(Map<String, dynamic> json) => Profile(
+    factory ProfileModel.fromJson(Map<String, dynamic> json) => ProfileModel(
         firstname: json["firstname"],
         lastname: json["lastname"],
         documentNumber: json["document_number"],

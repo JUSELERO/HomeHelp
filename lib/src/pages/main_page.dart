@@ -1,4 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:homehealth/src/pages/activities_page.dart';
+import 'package:homehealth/src/pages/my_activities_page.dart';
+import 'package:homehealth/src/pages/profile_page.dart';
 import 'package:homehealth/src/widgets/background.dart';
 
 class MainPage extends StatefulWidget {
@@ -9,15 +13,9 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   final List<Widget> _listPages = [
-    Text(
-      'Index 0: Home',
-    ),
-    Text(
-      'Index 1: Business',
-    ),
-    Text(
-      'Index 2: School',
-    ),
+    MyActivitiesPage(),
+    ActivitiesPage(),
+    ProfilePage()
   ];
 
   int _selectedIndex = 0;
@@ -49,6 +47,7 @@ class _MainPageState extends State<MainPage> {
         selectedItemColor: Colors.amber[800],
         currentIndex: _selectedIndex,
       ),
+      floatingActionButton: _crearBotones()
     );
   }
 
@@ -56,5 +55,40 @@ class _MainPageState extends State<MainPage> {
     setState(() {
       _selectedIndex = value;
     });
+  }
+
+  Widget _crearBotones() {
+    
+    switch (_selectedIndex) {
+      case 0:
+        return FloatingActionButton(
+          onPressed: () => _saveActivity(context),
+          child: Icon(Icons.add),
+        );
+        break;
+      case 1:
+        return Container();
+      case 2:
+        return FloatingActionButton(
+          onPressed: (){},
+          child: Icon(Icons.edit),
+        );
+      default:
+        return Container();
+    }
+  }
+
+  Future<void> _saveActivity(BuildContext context) {
+   return showDialog(
+      context: context,
+      barrierDismissible: false,
+      useSafeArea: false,
+      useRootNavigator: false,
+      builder: (BuildContext context) => AlertDialog(
+        title: Text('Success!'),
+        content: Text('You are in the football universe!'),
+
+      )
+   );
   }
 }

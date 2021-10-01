@@ -4,12 +4,13 @@ import 'package:homehealth/src/models/profile_model.dart';
 import 'package:homehealth/src/providers/country_provider.dart';
 import 'package:homehealth/src/providers/provider.dart';
 import 'package:homehealth/src/providers/usuario_provider.dart';
+import 'package:homehealth/src/utils/utils.dart';
 import 'package:homehealth/src/widgets/background.dart';
 import 'package:intl/intl.dart';
 
 class RegisterProfilePage extends StatelessWidget {
   final countryProvider = new CountryProvider();
-  final _profileModel = new Profile();
+  final _profileModel = new ProfileModel();
   final _usuarioProvider = new UsuarioProvider();
   final TextEditingController _textEditingController = new TextEditingController();
 
@@ -167,13 +168,38 @@ class RegisterProfilePage extends StatelessWidget {
                       },
                     );
                   }
-                )),
+                )
+            ),
+            SizedBox(height: size.height * 0.02),
+            Container(
+              margin: EdgeInsets.symmetric(vertical: 10),
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+              width: size.width * 0.8,
+              decoration: BoxDecoration(
+                color: Colors.grey.shade100,
+                borderRadius: BorderRadius.circular(29)),
+              child: StreamBuilder(
+                stream: bloc.addressStream,
+                builder: (context, snapshot) {
+                  return TextField(
+                    onChanged: (value) => bloc.changeAddress(value),
+                    keyboardType: TextInputType.text,
+                    decoration: InputDecoration(
+                      icon: Icon(Icons.maps_home_work, color: Colors.black12),
+                      hintText: "Dirección",
+                      border: InputBorder.none,
+                      errorText: snapshot.error,
+                    ),
+                  );
+                }
+              ),
+            ),
             SizedBox(height: size.height * 0.02),
             StreamBuilder(
               stream: bloc.formValidStream,
               builder: (context, snapshot) {
                 return ElevatedButton(
-                  onPressed: snapshot.hasData ? () => registerProfileUser(bloc) : null,
+                  onPressed: snapshot.hasData ? () => registerProfileUser(bloc,context) : null,
                   child: Container(
                     child: Text(
                       'Guardar',
@@ -212,13 +238,18 @@ class RegisterProfilePage extends StatelessWidget {
     }
   }
 
-  registerProfileUser(RegisterProfileBloc bloc){
+  registerProfileUser(RegisterProfileBloc bloc,BuildContext context) async{
     _profileModel.firstname = bloc.name;
     _profileModel.lastname = bloc.lastname;
     _profileModel.documentNumber = bloc.documentNumber;
     _profileModel.phone = bloc.phone;
     _profileModel.birthdate = bloc.birthdate;
-    _usuarioProvider.registerProfileUser(_profileModel);
-    
+    _profileModel.address = bloc.address;
+    bool next = await _usuarioProvider.registerProfileUser(_profileModel);
+    if( next ) {
+      Navigator.pushReplacementNamed(context, 'main');
+    } else {
+      mostrarAlerta(context, "No se pudo crear el perfil del usuario");
+    }
   }
 }

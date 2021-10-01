@@ -35,6 +35,16 @@ class Validators {
     }
   );
 
+  final validateAddress = StreamTransformer<String,String>.fromHandlers(
+    handleData: ( address, sink ) {
+      if( address.length > 0 ) {
+        sink.add(address);
+      } else {
+        sink.addError('Ingrese su dirección!');
+      }
+    }
+  );
+
   final validateLastname = StreamTransformer<String,String>.fromHandlers(
     handleData: ( lastname, sink ) {
       if( lastname.length > 0 ) {

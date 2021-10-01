@@ -64,15 +64,19 @@ class UsuarioProvider {
   }
 
 
-  registerProfileUser(Profile profile) async {
+  Future<bool> registerProfileUser(ProfileModel profile) async {
     final url = '$_urlProfile/profiles.json?auth=${ _prefs.token }';
     profile.user = _prefs.email;
     final resp = await http.post(
       Uri.parse(url),
       body:profileToJson(profile)
     );
-    final decodedData = json.decode(resp.body);
+    Map<String, dynamic> decodedData = json.decode(resp.body);
     log(" DECODED DATA ----> $decodedData ");
-    return true;
+    if( decodedData.containsKey('name')){
+      return true;
+    } else {
+      return false;
+    }
   }
 }
