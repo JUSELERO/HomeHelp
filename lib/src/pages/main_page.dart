@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:homehealth/src/pages/activities_page.dart';
-import 'package:homehealth/src/pages/my_activities_page.dart';
+import 'package:homehealth/src/pages/activities/activities_page.dart';
+import 'package:homehealth/src/pages/activities/my_activities_page.dart';
 import 'package:homehealth/src/pages/profile_page.dart';
 import 'package:homehealth/src/widgets/background.dart';
 
@@ -79,16 +79,18 @@ class _MainPageState extends State<MainPage> {
   }
 
   Future<void> _saveActivity(BuildContext context) {
-   return showDialog(
-      context: context,
-      barrierDismissible: false,
-      useSafeArea: false,
-      useRootNavigator: false,
-      builder: (BuildContext context) => AlertDialog(
-        title: Text('Success!'),
-        content: Text('You are in the football universe!'),
 
-      )
-   );
+    Navigator.pushNamed(context, "manage-activity");
+    // return showDialog(
+    //   context: context,
+    //   barrierDismissible: false,
+    //   useSafeArea: false,
+    //   useRootNavigator: false,
+    //   builder: (BuildContext context) => AlertDialog(
+    //     title: Text('Success!'),
+    //     content: Text('You are in the football universe!'),
+
+    //   )
+    // );
   }
 }
