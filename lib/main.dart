@@ -29,18 +29,18 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'HomeHelp App',
-        initialRoute: 'main',
+        initialRoute: 'login',
         theme: ThemeData(
             primaryColor: primaryColor, scaffoldBackgroundColor: Colors.white),
         routes: {
           'login': (BuildContext context) => LoginPage(),
-          'home': (BuildContext context) => HomePage(),
+          'home': (BuildContext context) => HomePage(), ////deprecado
           'registro': (BuildContext context) => RegisterPage(),
           'register-profile': (BuildContext context) => RegisterProfilePage(),
           'main': (BuildContext context) => MainPage(),
-          'my-activites':(BuildContext context) => MyActivitiesPage(),
-          'activities':(BuildContext context) => ActivitiesPage(),
-          "manage-activity":(BuildContext context) => ManageActivityPage()
+          'my-activites': (BuildContext context) => MyActivitiesPage(),
+          'activities': (BuildContext context) => ActivitiesPage(),
+          "manage-activity": (BuildContext context) => ManageActivityPage()
         },
         localizationsDelegates: [
           GlobalMaterialLocalizations.delegate,

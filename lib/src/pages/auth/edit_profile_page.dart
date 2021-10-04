@@ -8,7 +8,7 @@ import 'package:homehealth/src/utils/utils.dart';
 import 'package:homehealth/src/widgets/background.dart';
 import 'package:intl/intl.dart';
 
-class RegisterProfilePage extends StatelessWidget {
+class EditProfilePage extends StatelessWidget {
   final countryProvider = new CountryProvider();
   final _profileModel = new ProfileModel();
   final _usuarioProvider = new UsuarioProvider();
@@ -19,6 +19,7 @@ class RegisterProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     final bloc = Provider.registerProfile(context);
+    final perfil = RegisterProfileBloc;
 
     return Scaffold(
       body: Background(
@@ -65,6 +66,7 @@ class RegisterProfilePage extends StatelessWidget {
                               color: Colors.black12),
                           hintText: "Nombre",
                           border: InputBorder.none,
+                          prefixText: 'hols',
                           counterText: snapshot.data,
                           errorText: snapshot.error),
                     );
@@ -172,6 +174,7 @@ class RegisterProfilePage extends StatelessWidget {
                   color: Colors.grey.shade100,
                   borderRadius: BorderRadius.circular(29)),
               child: StreamBuilder(
+                  //initialData: bloc.name,
                   stream: bloc.addressStream,
                   builder: (context, snapshot) {
                     return TextField(
@@ -192,7 +195,9 @@ class RegisterProfilePage extends StatelessWidget {
                 builder: (context, snapshot) {
                   return ElevatedButton(
                       onPressed: snapshot.hasData
-                          ? () => registerProfileUser(bloc, context)
+                          ? () => updateProfileUser(bloc, context)
+
+                          ///comentado
                           : null,
                       child: Container(
                         child: Text(
@@ -229,19 +234,33 @@ class RegisterProfilePage extends StatelessWidget {
     }
   }
 
-  registerProfileUser(RegisterProfileBloc bloc, BuildContext context) async {
+  updateProfileUser(RegisterProfileBloc bloc, BuildContext context) async {
     _profileModel.firstname = bloc.name;
     _profileModel.lastname = bloc.lastname;
     _profileModel.documentNumber = bloc.documentNumber;
     _profileModel.phone = bloc.phone;
     _profileModel.birthdate = bloc.birthdate;
     _profileModel.address = bloc.address;
-    _profileModel.uID = bloc.uID;
     bool next = await _usuarioProvider.registerProfileUser(_profileModel);
     if (next) {
       Navigator.pushReplacementNamed(context, 'main');
     } else {
       mostrarAlerta(context, "No se pudo crear el perfil del usuario");
     }
+
+    /* registerProfileUser(RegisterProfileBloc bloc, BuildContext context) async {
+    _profileModel.firstname = bloc.name;
+    _profileModel.lastname = bloc.lastname;
+    _profileModel.documentNumber = bloc.documentNumber;
+    _profileModel.phone = bloc.phone;
+    _profileModel.birthdate = bloc.birthdate;
+    _profileModel.address = bloc.address;
+    bool next = await _usuarioProvider.registerProfileUser(_profileModel);
+    if (next) {
+      Navigator.pushReplacementNamed(context, 'main');
+    } else {
+      mostrarAlerta(context, "No se pudo crear el perfil del usuario");
+    }
+  } */
   }
 }
