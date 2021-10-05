@@ -263,4 +263,20 @@ class EditProfilePage extends StatelessWidget {
     }
   } */
   }
+  /* getProfileUser(RegisterProfileBloc bloc, BuildContext context) async {
+    
+    bool next = await _usuarioProvider.getProfileUser(_profileModel);
+    if (next) {
+      Navigator.pushReplacementNamed(context, 'main');
+    } else {
+      mostrarAlerta(context, "No se pudo crear el perfil del usuario");    comentado porque no l opude hacer funcionar en el edit  JSLR
+    }
+    _profileModel.firstname = bloc.name;
+    _profileModel.lastname = bloc.lastname;
+    _profileModel.documentNumber = bloc.documentNumber;
+    _profileModel.phone = bloc.phone;
+    _profileModel.birthdate = bloc.birthdate;
+    _profileModel.address = bloc.address;
+    
+  } */
 }

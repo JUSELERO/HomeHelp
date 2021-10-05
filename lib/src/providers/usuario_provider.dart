@@ -33,7 +33,11 @@ class UsuarioProvider {
 
     if (decodedResp.containsKey('idToken')) {
       _prefs.token = decodedResp['idToken'];
-      return {'ok': true, 'token': decodedResp['idToken']};
+      return {
+        'ok': true,
+        'token': decodedResp['idToken'],
+        'Uid': decodedResp['localId']
+      };
     } else {
       return {'ok': false, 'mensaje': decodedResp['error']['message']};
     }
@@ -80,6 +84,35 @@ class UsuarioProvider {
       return true;
     } else {
       return false;
+    }
+  }
+
+  Future<bool> updateProfileUser(ProfileModel profile) async {
+    final url =
+        '$_urlProfile/profiles/${profile.uID}.json'; //  se le quita el authtentication pora hora porque genera problema con laregla del servidor "?auth=${_prefs.token}"
+    profile.user = _prefs.email;
+    final resp = await http.put(Uri.parse(url), body: profileToJson(profile));
+    Map<String, dynamic> decodedData = json.decode(resp.body);
+    log(" DECODED DATA ----> $decodedData ");
+    if (decodedData.containsKey('name')) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  ///     ESTE METODO NO SE A TERMINA DO DEVUELVE UN OBJETO PROFILE PERO EL OBJETO ESTA VACIO FALTA RELLENARLO CKON L RESPUESTA DE LACONSUTLA Y VERIFICAR LA CONSULTA JSLR
+  Future<ProfileModel> getProfileUser(ProfileModel profile) async {
+    final url =
+        '$_urlProfile/profiles/${profile.uID}.json'; //  se le quita el authtentication pora hora porque genera problema con laregla del servidor "?auth=${_prefs.token}"
+    profile.user = _prefs.email;
+    final resp = await http.get(Uri.parse(url));
+    Map<String, dynamic> decodedData = json.decode(resp.body);
+    log(" DECODED DATA ----> $decodedData ");
+    if (decodedData.containsKey('name')) {
+      return profile;
+    } else {
+      return profile;
     }
   }
 }

@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:homehealth/src/pages/activities/activities_page.dart';
 import 'package:homehealth/src/pages/activities/my_activities_page.dart';
 import 'package:homehealth/src/pages/profile_page.dart';
+import 'package:homehealth/src/providers/provider.dart';
 import 'package:homehealth/src/widgets/background.dart';
 
 class MainPage extends StatefulWidget {
-
   @override
   _MainPageState createState() => _MainPageState();
 }
@@ -22,33 +22,32 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
+    final bloc = Provider.registerProfile(
+        context); //llamo al bloc para traer la infomracion guardada
     return Scaffold(
-      body: Background(
-        child: Center(
-          child: _listPages.elementAt(_selectedIndex)
+        body: Background(
+          child: Center(child: _listPages.elementAt(_selectedIndex)),
         ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Mis Actividades',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.business),
-            label: 'Actividades',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.school),
-            label: 'Perfil',
-          ),
-        ],
-        onTap: _onItemTapped,
-        selectedItemColor: Colors.amber[800],
-        currentIndex: _selectedIndex,
-      ),
-      floatingActionButton: _crearBotones()
-    );
+        bottomNavigationBar: BottomNavigationBar(
+          items: [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Mis Actividades',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.business),
+              label: 'Actividades',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.school),
+              label: 'Perfil',
+            ),
+          ],
+          onTap: _onItemTapped,
+          selectedItemColor: Colors.amber[800],
+          currentIndex: _selectedIndex,
+        ),
+        floatingActionButton: _crearBotones());
   }
 
   void _onItemTapped(int value) {
@@ -58,7 +57,6 @@ class _MainPageState extends State<MainPage> {
   }
 
   Widget _crearBotones() {
-    
     switch (_selectedIndex) {
       case 0:
         return FloatingActionButton(
@@ -70,7 +68,9 @@ class _MainPageState extends State<MainPage> {
         return Container();
       case 2:
         return FloatingActionButton(
-          onPressed: (){},
+          onPressed: () {
+            Navigator.pushReplacementNamed(context, 'edit-profile');
+          },
           child: Icon(Icons.edit),
         );
       default:
@@ -79,7 +79,6 @@ class _MainPageState extends State<MainPage> {
   }
 
   Future<void> _saveActivity(BuildContext context) {
-
     Navigator.pushNamed(context, "manage-activity");
     // return showDialog(
     //   context: context,

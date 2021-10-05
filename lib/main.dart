@@ -13,6 +13,8 @@ import 'package:homehealth/src/providers/provider.dart';
 import 'package:homehealth/src/utils/constants.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
+import 'src/pages/auth/edit_profile_page.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final prefs = new PreferenciasUsuario();
@@ -37,6 +39,7 @@ class MyApp extends StatelessWidget {
           'home': (BuildContext context) => HomePage(), ////deprecado
           'registro': (BuildContext context) => RegisterPage(),
           'register-profile': (BuildContext context) => RegisterProfilePage(),
+          'edit-profile': (BuildContext context) => EditProfilePage(),
           'main': (BuildContext context) => MainPage(),
           'my-activites': (BuildContext context) => MyActivitiesPage(),
           'activities': (BuildContext context) => ActivitiesPage(),
