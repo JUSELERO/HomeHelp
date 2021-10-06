@@ -9,7 +9,7 @@ class ActivityProvider{
   final String _url = 'https://homehelp-7ac26-default-rtdb.firebaseio.com//activities.json?auth';
   final _prefs = new PreferenciasUsuario(); 
 
-  saveActivity(ActivityModel activity) async{
+  createActivity(ActivityModel activity) async{
     final url = '$_url=${ _prefs.token }';
     final resp = await http.post(
       Uri.parse(url),
@@ -21,4 +21,18 @@ class ActivityProvider{
     print("decodedResp ----> $decodedResp");
 
   }
+
+  updateActivity(ActivityModel activity) async{
+
+  }
+
+
+  deleteActivity(ActivityModel activity) async{
+
+  }
+
+  getMyActivities() async {
+    
+  }
+
 }
