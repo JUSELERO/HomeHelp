@@ -20,6 +20,7 @@ class EditProfilePage extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     final bloc = Provider.registerProfile(context);
     final perfil = RegisterProfileBloc;
+    getProfileUser(bloc, context);
 
     return Scaffold(
       body: Background(
@@ -62,6 +63,7 @@ class EditProfilePage extends StatelessWidget {
                       onChanged: (value) => bloc.changeName(value),
                       keyboardType: TextInputType.name,
                       decoration: InputDecoration(
+                          labelText: bloc.name,
                           icon: Icon(Icons.person_outline_sharp,
                               color: Colors.black12),
                           hintText: "Nombre",
@@ -263,20 +265,24 @@ class EditProfilePage extends StatelessWidget {
     }
   } */
   }
-  /* getProfileUser(RegisterProfileBloc bloc, BuildContext context) async {
-    
-    bool next = await _usuarioProvider.getProfileUser(_profileModel);
-    if (next) {
+
+  getProfileUser(RegisterProfileBloc bloc, BuildContext context) async {
+    _profileModel.uID = bloc.uID;
+    Map<String, dynamic> userData =
+        await _usuarioProvider.getProfileUser(_profileModel);
+    if (userData.containsKey('uID')) {
+      bloc.changeAddress(userData['address']);
+      bloc.changeBirthdate(userData['birthdate']);
+      bloc.changeDocumentNumber(userData['document_number']);
+      bloc.changeName(userData['firstname']);
+      bloc.changeLastName(userData['lastname']);
+      bloc.changePhone(userData['phone']);
+      bloc.changeAddress(userData['user']);
+      print(_profileModel);
       Navigator.pushReplacementNamed(context, 'main');
     } else {
-      mostrarAlerta(context, "No se pudo crear el perfil del usuario");    comentado porque no l opude hacer funcionar en el edit  JSLR
+      print('sucedio un error en la consulta de Data usuario');
+      //mostrarAlerta(context, "No se pudo crear el perfil del usuario");
     }
-    _profileModel.firstname = bloc.name;
-    _profileModel.lastname = bloc.lastname;
-    _profileModel.documentNumber = bloc.documentNumber;
-    _profileModel.phone = bloc.phone;
-    _profileModel.birthdate = bloc.birthdate;
-    _profileModel.address = bloc.address;
-    
-  } */
+  }
 }

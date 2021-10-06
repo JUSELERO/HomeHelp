@@ -102,17 +102,17 @@ class UsuarioProvider {
   }
 
   ///     ESTE METODO NO SE A TERMINA DO DEVUELVE UN OBJETO PROFILE PERO EL OBJETO ESTA VACIO FALTA RELLENARLO CKON L RESPUESTA DE LACONSUTLA Y VERIFICAR LA CONSULTA JSLR
-  Future<ProfileModel> getProfileUser(ProfileModel profile) async {
+  Future<Map<String, dynamic>> getProfileUser(ProfileModel profile) async {
     final url =
         '$_urlProfile/profiles/${profile.uID}.json'; //  se le quita el authtentication pora hora porque genera problema con laregla del servidor "?auth=${_prefs.token}"
     profile.user = _prefs.email;
     final resp = await http.get(Uri.parse(url));
     Map<String, dynamic> decodedData = json.decode(resp.body);
     log(" DECODED DATA ----> $decodedData ");
-    if (decodedData.containsKey('name')) {
-      return profile;
+    if (decodedData.containsKey('uID')) {
+      return decodedData;
     } else {
-      return profile;
+      return decodedData;
     }
   }
 }
