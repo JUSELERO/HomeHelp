@@ -19,13 +19,12 @@ class UsuarioProvider {
       'returnSecureToken': true
     };
     final resp = await http.post(
-      Uri.parse(
-          'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=$_firebaseToken'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: json.encode(authData)
-    );
+        Uri.parse(
+            'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=$_firebaseToken'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: json.encode(authData));
     Map<String, dynamic> decodedResp = json.decode(resp.body);
     log("decodedResp ---> $decodedResp");
     if (decodedResp.containsKey('idToken')) {
@@ -41,7 +40,6 @@ class UsuarioProvider {
       return {'ok': false, 'mensaje': decodedResp['error']['message']};
     }
   }
-
 
   Future<Map<String, dynamic>> registerUser(
       String email, String password) async {
@@ -109,7 +107,8 @@ class UsuarioProvider {
     final resp = await http.get(Uri.parse(url));
     Map<String, dynamic> decodedData = json.decode(resp.body);
     log(" DECODED DATA ----> $decodedData ");
-    if (decodedData.containsKey('uID')) {
+    if (decodedData[0] != 'null') {
+      //.containsKey('uID')  se lo uite
       return decodedData;
     } else {
       return decodedData;

@@ -268,8 +268,13 @@ class EditProfilePage extends StatelessWidget {
 
   getProfileUser(RegisterProfileBloc bloc, BuildContext context) async {
     _profileModel.uID = bloc.uID;
+    // Iterable<MapEntry<String, dynamic>> tarea;
+    Iterable<String> tarea;
     Map<String, dynamic> userData =
         await _usuarioProvider.getProfileUser(_profileModel);
+    // tarea = userData.keys;
+    tarea = userData.keys;
+
     if (userData.containsKey('uID')) {
       bloc.changeAddress(userData['address']);
       bloc.changeBirthdate(userData['birthdate']);
