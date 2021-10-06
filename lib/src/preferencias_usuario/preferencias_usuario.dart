@@ -41,4 +41,12 @@ class PreferenciasUsuario {
   set email(String value) {
     _prefs.setString('email',value);
   }
+  
+  get uid {
+    return _prefs.getString('uid') ?? '';
+  }
+
+  set uid(String value) {
+    _prefs.setString('uid', value);
+  }
 }
