@@ -18,21 +18,20 @@ class UsuarioProvider {
       'password': password,
       'returnSecureToken': true
     };
-
     final resp = await http.post(
-        Uri.parse(
-            'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=$_firebaseToken'),
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: json.encode(authData));
-
+      Uri.parse(
+          'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=$_firebaseToken'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: json.encode(authData)
+    );
     Map<String, dynamic> decodedResp = json.decode(resp.body);
-
-    print(decodedResp);
-
+    log("decodedResp ---> $decodedResp");
     if (decodedResp.containsKey('idToken')) {
-      _prefs.token = decodedResp['idToken'];
+      //_prefs.token = decodedResp['idToken'];
+      _prefs.uid = decodedResp['localId'];
+      log("uid --> ${_prefs.uid}");
       return {
         'ok': true,
         'token': decodedResp['idToken'],
@@ -42,6 +41,7 @@ class UsuarioProvider {
       return {'ok': false, 'mensaje': decodedResp['error']['message']};
     }
   }
+
 
   Future<Map<String, dynamic>> registerUser(
       String email, String password) async {
