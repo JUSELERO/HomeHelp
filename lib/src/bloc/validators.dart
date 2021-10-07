@@ -1,6 +1,9 @@
 import 'dart:async';
 
 class Validators {
+
+
+  // VALIDACIONES DEL LOGIN Y REGISTRO INICIAL
   final validarEmail =
       StreamTransformer<String, String>.fromHandlers(handleData: (email, sink) {
     String pattern =
@@ -22,6 +25,7 @@ class Validators {
     }
   });
 
+  // VALIDACIONES DEL REGISTRO DEL PERFIL
   final validateName =
       StreamTransformer<String, String>.fromHandlers(handleData: (name, sink) {
     if (name.length > 0) {
@@ -67,6 +71,7 @@ class Validators {
       sink.addError('Ingrese un número valido!');
     }
   });
+  
   final validateBirthDate = StreamTransformer<String, String>.fromHandlers(
       handleData: (birthdate, sink) {
     if (birthdate.isNotEmpty) {
@@ -75,6 +80,7 @@ class Validators {
       sink.addError('Escoja su fecha de nacimiento!');
     }
   });
+  
   final validateUid = StreamTransformer<String, String>.fromHandlers(
       handleData: (birthdate, sink) {
     if (birthdate.isNotEmpty) {
@@ -83,4 +89,17 @@ class Validators {
       sink.addError('valor de UID del usuario esta vacio');
     }
   });
+
+  // VALIDACIONES DE LA CREACIÓN DE ACTIVIADES
+
+  final validateIsEmpty = StreamTransformer<String,String>.fromHandlers(
+    handleData: (text,sink){
+      if(text.isNotEmpty){
+        sink.add(text);
+      } else {
+        sink.addError("Ingrese un valor valido");
+      }
+    }
+  );
+
 }
