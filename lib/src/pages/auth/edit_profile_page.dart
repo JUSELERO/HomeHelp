@@ -7,10 +7,12 @@ import 'package:homehealth/src/providers/usuario_provider.dart';
 import 'package:homehealth/src/utils/utils.dart';
 import 'package:homehealth/src/widgets/background.dart';
 import 'package:intl/intl.dart';
+import 'dart:convert';
 
 class EditProfilePage extends StatelessWidget {
   final countryProvider = new CountryProvider();
   final _profileModel = new ProfileModel();
+
   final _usuarioProvider = new UsuarioProvider();
   final TextEditingController _textEditingController =
       new TextEditingController();
@@ -21,7 +23,6 @@ class EditProfilePage extends StatelessWidget {
     final bloc = Provider.registerProfile(context);
     final perfil = RegisterProfileBloc;
     getProfileUser(bloc, context);
-
     return Scaffold(
       body: Background(
         child: SingleChildScrollView(
@@ -63,14 +64,15 @@ class EditProfilePage extends StatelessWidget {
                       onChanged: (value) => bloc.changeName(value),
                       keyboardType: TextInputType.name,
                       decoration: InputDecoration(
-                          labelText: bloc.name,
-                          icon: Icon(Icons.person_outline_sharp,
-                              color: Colors.black12),
-                          hintText: "Nombre",
-                          border: InputBorder.none,
-                          prefixText: 'hols',
-                          counterText: snapshot.data,
-                          errorText: snapshot.error),
+                        //labelText: bloc.name,   PONER CUANDO FUNCIONE EL GET
+                        icon: Icon(Icons.person_outline_sharp,
+                            color: Colors.black12),
+                        hintText: "Nombre",
+                        border: InputBorder.none,
+                        prefixText: 'hols',
+                        counterText: snapshot.data,
+                        //errorText: snapshot.error
+                      ),
                     );
                   }),
             ),
@@ -92,7 +94,7 @@ class EditProfilePage extends StatelessWidget {
                             color: Colors.black12),
                         hintText: "Apellido",
                         border: InputBorder.none,
-                        errorText: snapshot.error,
+                        //errorText: snapshot.error,
                       ),
                     );
                   }),
@@ -114,7 +116,7 @@ class EditProfilePage extends StatelessWidget {
                         icon: Icon(Icons.credit_card, color: Colors.black12),
                         hintText: "Número de Identificación",
                         border: InputBorder.none,
-                        errorText: snapshot.error,
+                        //errorText: snapshot.error,
                       ),
                     );
                   }),
@@ -136,7 +138,7 @@ class EditProfilePage extends StatelessWidget {
                         icon: Icon(Icons.phone, color: Colors.black12),
                         hintText: "Número de Telefono",
                         border: InputBorder.none,
-                        errorText: snapshot.error,
+                        //errorText: snapshot.error,
                       ),
                     );
                   }),
@@ -186,7 +188,7 @@ class EditProfilePage extends StatelessWidget {
                         icon: Icon(Icons.maps_home_work, color: Colors.black12),
                         hintText: "Dirección",
                         border: InputBorder.none,
-                        errorText: snapshot.error,
+                        //errorText: snapshot.error,
                       ),
                     );
                   }),
@@ -243,7 +245,7 @@ class EditProfilePage extends StatelessWidget {
     _profileModel.phone = bloc.phone;
     _profileModel.birthdate = bloc.birthdate;
     _profileModel.address = bloc.address;
-    bool next = await _usuarioProvider.registerProfileUser(_profileModel);
+    bool next = await _usuarioProvider.updateProfileUser(_profileModel);
     if (next) {
       Navigator.pushReplacementNamed(context, 'main');
     } else {
@@ -268,14 +270,22 @@ class EditProfilePage extends StatelessWidget {
 
   getProfileUser(RegisterProfileBloc bloc, BuildContext context) async {
     _profileModel.uID = bloc.uID;
-    // Iterable<MapEntry<String, dynamic>> tarea;
-    Iterable<String> tarea;
+
     Map<String, dynamic> userData =
         await _usuarioProvider.getProfileUser(_profileModel);
-    // tarea = userData.keys;
-    tarea = userData.keys;
 
-    if (userData.containsKey('uID')) {
+    String dise = userData.values.toString();
+    dise = dise
+        .replaceAll("({", "{\"")
+        .replaceAll("})", "\"}")
+        .replaceAll(',', '\",\"')
+        .replaceAll(':', '\":\"')
+        .replaceAll('\"{', '\":\"')
+        .replaceAll('0\":\"0', '0:0');
+    print(JsonEncoder().convert(userData));
+    Map<String, dynamic> convertido;
+    convertido = jsonDecode(dise);
+    if (convertido.containsKey('address')) {
       bloc.changeAddress(userData['address']);
       bloc.changeBirthdate(userData['birthdate']);
       bloc.changeDocumentNumber(userData['document_number']);
@@ -284,7 +294,6 @@ class EditProfilePage extends StatelessWidget {
       bloc.changePhone(userData['phone']);
       bloc.changeAddress(userData['user']);
       print(_profileModel);
-      Navigator.pushReplacementNamed(context, 'main');
     } else {
       print('sucedio un error en la consulta de Data usuario');
       //mostrarAlerta(context, "No se pudo crear el perfil del usuario");
