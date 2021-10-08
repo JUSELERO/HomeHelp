@@ -22,7 +22,7 @@ class EditProfilePage extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     final bloc = Provider.registerProfile(context);
     final perfil = RegisterProfileBloc;
-    getProfileUser(bloc, context);
+    _getProfileUser(bloc, context);
     return Scaffold(
       body: Background(
         child: SingleChildScrollView(
@@ -61,15 +61,15 @@ class EditProfilePage extends StatelessWidget {
                   stream: bloc.nameStream,
                   builder: (context, snapshot) {
                     return TextField(
+                      controller: TextEditingController(text: bloc.name),
                       onChanged: (value) => bloc.changeName(value),
                       keyboardType: TextInputType.name,
                       decoration: InputDecoration(
-                        //labelText: bloc.name,   PONER CUANDO FUNCIONE EL GET
+                        //labelText: bloc.name,
                         icon: Icon(Icons.person_outline_sharp,
                             color: Colors.black12),
                         hintText: "Nombre",
                         border: InputBorder.none,
-                        prefixText: 'hols',
                         counterText: snapshot.data,
                         //errorText: snapshot.error
                       ),
@@ -87,6 +87,7 @@ class EditProfilePage extends StatelessWidget {
                   stream: bloc.lastNameStream,
                   builder: (context, snapshot) {
                     return TextField(
+                      controller: TextEditingController(text: bloc.lastname),
                       onChanged: (value) => bloc.changeLastName(value),
                       keyboardType: TextInputType.name,
                       decoration: InputDecoration(
@@ -110,6 +111,8 @@ class EditProfilePage extends StatelessWidget {
                   stream: bloc.documentNumberStream,
                   builder: (context, snapshot) {
                     return TextField(
+                      controller:
+                          TextEditingController(text: bloc.documentNumber),
                       onChanged: (value) => bloc.changeDocumentNumber(value),
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
@@ -132,6 +135,7 @@ class EditProfilePage extends StatelessWidget {
                   stream: bloc.phoneStream,
                   builder: (context, snapshot) {
                     return TextField(
+                      controller: TextEditingController(text: bloc.phone),
                       onChanged: (value) => bloc.changePhone(value),
                       keyboardType: TextInputType.phone,
                       decoration: InputDecoration(
@@ -182,6 +186,7 @@ class EditProfilePage extends StatelessWidget {
                   stream: bloc.addressStream,
                   builder: (context, snapshot) {
                     return TextField(
+                      controller: TextEditingController(text: bloc.address),
                       onChanged: (value) => bloc.changeAddress(value),
                       keyboardType: TextInputType.text,
                       decoration: InputDecoration(
@@ -251,52 +256,33 @@ class EditProfilePage extends StatelessWidget {
     } else {
       mostrarAlerta(context, "No se pudo crear el perfil del usuario");
     }
-
-    /* registerProfileUser(RegisterProfileBloc bloc, BuildContext context) async {
-    _profileModel.firstname = bloc.name;
-    _profileModel.lastname = bloc.lastname;
-    _profileModel.documentNumber = bloc.documentNumber;
-    _profileModel.phone = bloc.phone;
-    _profileModel.birthdate = bloc.birthdate;
-    _profileModel.address = bloc.address;
-    bool next = await _usuarioProvider.registerProfileUser(_profileModel);
-    if (next) {
-      Navigator.pushReplacementNamed(context, 'main');
-    } else {
-      mostrarAlerta(context, "No se pudo crear el perfil del usuario");
-    }
-  } */
   }
 
-  getProfileUser(RegisterProfileBloc bloc, BuildContext context) async {
+  _getProfileUser(RegisterProfileBloc bloc, BuildContext context) async {
     _profileModel.uID = bloc.uID;
-
     Map<String, dynamic> userData =
         await _usuarioProvider.getProfileUser(_profileModel);
-
     String dise = userData.values.toString();
     dise = dise
         .replaceAll("({", "{\"")
         .replaceAll("})", "\"}")
-        .replaceAll(',', '\",\"')
-        .replaceAll(':', '\":\"')
-        .replaceAll('\"{', '\":\"')
-        .replaceAll('0\":\"0', '0:0');
+        .replaceAll(', ', '\",\"')
+        .replaceAll(': ', '\":\"')
+        .replaceAll('\"{', '\":\"');
     print(JsonEncoder().convert(userData));
     Map<String, dynamic> convertido;
     convertido = jsonDecode(dise);
     if (convertido.containsKey('address')) {
-      bloc.changeAddress(userData['address']);
-      bloc.changeBirthdate(userData['birthdate']);
-      bloc.changeDocumentNumber(userData['document_number']);
-      bloc.changeName(userData['firstname']);
-      bloc.changeLastName(userData['lastname']);
-      bloc.changePhone(userData['phone']);
-      bloc.changeAddress(userData['user']);
+      bloc.changeAddress(convertido['address']);
+      bloc.changeBirthdate(convertido['birthdate']);
+      bloc.changeDocumentNumber(convertido['document_number']);
+      bloc.changeName(convertido['firstname']);
+      bloc.changeLastName(convertido['lastname']);
+      bloc.changePhone(convertido['phone']);
+      bloc.changeAddress(convertido['user']);
       print(_profileModel);
     } else {
       print('sucedio un error en la consulta de Data usuario');
-      //mostrarAlerta(context, "No se pudo crear el perfil del usuario");
     }
   }
 }

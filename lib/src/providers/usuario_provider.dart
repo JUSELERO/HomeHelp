@@ -89,6 +89,7 @@ class UsuarioProvider {
     final url =
         '$_urlProfile/profiles/${profile.uID}.json'; //  se le quita el authtentication pora hora porque genera problema con laregla del servidor "?auth=${_prefs.token}"
     profile.user = _prefs.email;
+
     final resp = await http.put(Uri.parse(url), body: profileToJson(profile));
     Map<String, dynamic> decodedData = json.decode(resp.body);
     log(" DECODED DATA ----> $decodedData ");

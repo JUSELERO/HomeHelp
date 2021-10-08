@@ -1,9 +1,14 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:homehealth/src/bloc/register_profile_bloc.dart';
+import 'package:homehealth/src/models/profile_model.dart';
 import 'package:homehealth/src/pages/activities/activities_page.dart';
 import 'package:homehealth/src/pages/activities/my_activities_page.dart';
 import 'package:homehealth/src/pages/profile_page.dart';
 import 'package:homehealth/src/providers/provider.dart';
+import 'package:homehealth/src/providers/usuario_provider.dart';
 import 'package:homehealth/src/widgets/background.dart';
 
 class MainPage extends StatefulWidget {
@@ -24,6 +29,7 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     final bloc = Provider.registerProfile(
         context); //llamo al bloc para traer la infomracion guardada
+
     return Scaffold(
         body: Background(
           child: Center(child: _listPages.elementAt(_selectedIndex)),
@@ -47,7 +53,7 @@ class _MainPageState extends State<MainPage> {
           selectedItemColor: Colors.amber[800],
           currentIndex: _selectedIndex,
         ),
-        floatingActionButton: _crearBotones());
+        floatingActionButton: _crearBotones(bloc));
   }
 
   void _onItemTapped(int value) {
@@ -56,7 +62,7 @@ class _MainPageState extends State<MainPage> {
     });
   }
 
-  Widget _crearBotones() {
+  Widget _crearBotones(RegisterProfileBloc bloc) {
     switch (_selectedIndex) {
       case 0:
         return FloatingActionButton(
