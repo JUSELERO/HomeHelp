@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:homehealth/src/bloc/activity_bloc.dart';
+import 'package:homehealth/src/providers/provider.dart';
 import 'package:homehealth/src/widgets/background.dart';
 import 'package:intl/intl.dart';
 
@@ -19,7 +21,7 @@ class _ManageActivityPageState extends State<ManageActivityPage> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    
+    final _bloc = Provider.activity(context);
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -33,57 +35,189 @@ class _ManageActivityPageState extends State<ManageActivityPage> {
           margin: EdgeInsets.only(top: size.height * 0.15),
           child: Column(
             children: [
-              TextField(
-                decoration: InputDecoration(
-                  hintText: "Nombre de la actividad"
+              Container(
+                margin: EdgeInsets.symmetric(vertical:10.0),
+                padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                width: size.width * 0.8,
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade100,
+                  borderRadius: BorderRadius.circular(29)
+                ),
+                child: StreamBuilder<Object>(
+                  stream: _bloc.descriptionStream,
+                  builder: (context, snapshot) {
+                    return TextField(
+                      onChanged: (value) => _bloc.changeName,
+                      decoration: InputDecoration(
+                        hintText: "Nombre de la actividad",
+                        border: InputBorder.none,
+                        icon: Icon(Icons.task, color: Colors.black12),
+                        errorText: snapshot.error
+                      ),
+                      keyboardType: TextInputType.name,
+                    );
+                  }
                 ),
               ),
-              TextField(
-                decoration: InputDecoration(
-                  hintText: "Descripción de la actividad"
+              Container(
+                margin: EdgeInsets.symmetric(vertical:10.0),
+                padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                width: size.width * 0.8,
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade100,
+                  borderRadius: BorderRadius.circular(29)
                 ),
-                maxLines: 4,
-              ),
-              TextField(
-                decoration: InputDecoration(
-                  hintText: "Precio por Hora"
+                child: StreamBuilder<Object>(
+                  stream: _bloc.descriptionStream,
+                  builder: (context, snapshot) {
+                    return TextField(
+                      onChanged: (value) => _bloc.changeDescription,
+                      decoration: InputDecoration(
+                        hintText: "Descripción de la actividad",
+                        border: InputBorder.none,
+                        icon: Icon(Icons.description, color: Colors.black12),
+                        errorText: snapshot.error
+                      ),
+                      maxLines: 4,
+                      keyboardType: TextInputType.name,
+                    );
+                  }
                 ),
-                keyboardType: TextInputType.number,
               ),
-              TextField(
-                decoration: InputDecoration(
-                  hintText: "Horas Estimadas"
+              Container(
+                margin: EdgeInsets.symmetric(vertical:10.0),
+                padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                width: size.width * 0.8,
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade100,
+                  borderRadius: BorderRadius.circular(29)
                 ),
-                keyboardType: TextInputType.number,
-              ),
-              TextField(
-                onChanged: (value) => {},
-                controller: _textEditingController,
-                keyboardType: TextInputType.text,
-                decoration: InputDecoration(
-                  icon: Icon(Icons.calendar_today, color: Colors.black12),
-                  hintText: "Fecha de Nacimiento",
-                  border: InputBorder.none,
+                child: StreamBuilder<Object>(
+                  stream: _bloc.priceStream,
+                  builder: (context, snapshot) {
+                    return TextField(
+                      onChanged: (value) => _bloc.changePrice,
+                      decoration: InputDecoration(
+                        hintText: "Precio por hora",
+                        border: InputBorder.none,
+                        icon: Icon(Icons.monetization_on_outlined, color: Colors.black12),
+                        errorText: snapshot.error
+                      ),
+                      keyboardType: TextInputType.name,
+                    );
+                  }
                 ),
-                onTap: () {
-                  FocusScope.of(context).requestFocus(new FocusNode());
-                  _selectDate(context);
-                },
               ),
-              DropdownButton(
-                value: _skillSelected,
-                items: _skills.map((String item){
-                  return DropdownMenuItem(
-                    child: Text(item),
-                    value: item
-                  );
-                }).toList(),
-                onChanged: (value){
-                  setState(() {
-                    _skillSelected = value;
-                  });
-                },
-              )
+              Container(
+                margin: EdgeInsets.symmetric(vertical:10.0),
+                padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                width: size.width * 0.8,
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade100,
+                  borderRadius: BorderRadius.circular(29)
+                ),
+                child: StreamBuilder<Object>(
+                  stream: _bloc.hoursStream,
+                  builder: (context, snapshot) {
+                    return TextField(
+                      onChanged: (value) => _bloc.changeHours,
+                      decoration: InputDecoration(
+                        hintText: "Horas Estimadas",
+                        border: InputBorder.none,
+                        icon: Icon(Icons.watch_later_outlined, color: Colors.black12),
+                        errorText: snapshot.error
+                      ),
+                      keyboardType: TextInputType.name,
+                    );
+                  }
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(vertical: 10),
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                width: size.width * 0.8,
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade100,
+                  borderRadius: BorderRadius.circular(29)
+                ),
+                child: StreamBuilder(
+                  stream: _bloc.dateStream,
+                  builder: (context, snapshot) {
+                    return TextField(
+                      onChanged: (value) => {},
+                      controller: _textEditingController,
+                      keyboardType: TextInputType.text,
+                      decoration: InputDecoration(
+                      icon: Icon(Icons.calendar_today, color: Colors.black12),
+                        hintText: "Fecha de realización",
+                        border: InputBorder.none,
+                      ),
+                      onTap: () {
+                        FocusScope.of(context).requestFocus(new FocusNode());
+                        _selectDate(context, _bloc);
+                      },
+                    );
+                  }
+                )
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(vertical: 10),
+                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                width: size.width * 0.8,
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade100,
+                  borderRadius: BorderRadius.circular(29)
+                ),
+                child: StreamBuilder<Object>(
+                  stream: _bloc.skillStream,
+                  builder: (context, snapshot) {
+                    return DropdownButtonHideUnderline(
+                      child: DropdownButton(
+                        icon: Icon(Icons.attribution_outlined, color: Colors.black12),
+
+                        value: snapshot.data,
+                        items: _skills.map((String item){
+                          return DropdownMenuItem(
+                            child: Text(item),
+                            value: item
+                          );
+                        }).toList(),
+                        onChanged: (value){
+                          setState(() {
+                            _bloc.changeSkill(value);
+                          });
+                        },
+                      ),
+                    );
+                  }
+                ),
+              ),
+            SizedBox(height: size.height * 0.02),
+            StreamBuilder(
+              stream: _bloc.formValidStream,
+              builder: (context, snapshot) {
+                return ElevatedButton(
+                  onPressed: snapshot.hasData
+                    ? () => createActivity(_bloc, context)
+                    : null,
+                  child: Container(
+                    child: Text(
+                      'Crear Actividad',
+                      style: TextStyle(fontSize: 18.0),
+                    ),
+                    padding: EdgeInsets.symmetric(vertical: 19, horizontal: 100),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(29)
+                    ),
+                    elevation: 0.0,
+                    primary: Colors.deepPurple,
+                    onPrimary: Colors.white
+                  )
+                );
+              }
+            ),
             ],
           ),
         ),
@@ -91,7 +225,7 @@ class _ManageActivityPageState extends State<ManageActivityPage> {
     );
   }
 
-  void _selectDate(BuildContext context) async {
+  void _selectDate(BuildContext context,ActivityBloc bloc) async {
     DateTime picked = await showDatePicker(
       context: context,
       initialDate: new DateTime.now(),
@@ -104,4 +238,6 @@ class _ManageActivityPageState extends State<ManageActivityPage> {
       _textEditingController.text = formatDate.format(picked);
     }
   }
+
+  createActivity(bloc, BuildContext context) {}
 }
