@@ -32,7 +32,7 @@ class _MainPageState extends State<MainPage> {
 
     return Scaffold(
         body: Background(
-          child: Center(child: _listPages.elementAt(_selectedIndex)),
+          child: _listPages.elementAt(_selectedIndex),
         ),
         bottomNavigationBar: BottomNavigationBar(
           items: [
@@ -41,11 +41,11 @@ class _MainPageState extends State<MainPage> {
               label: 'Mis Actividades',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.business),
+              icon: Icon(Icons.task_alt),
               label: 'Actividades',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.school),
+              icon: Icon(Icons.account_circle_sharp),
               label: 'Perfil',
             ),
           ],
@@ -66,6 +66,7 @@ class _MainPageState extends State<MainPage> {
     switch (_selectedIndex) {
       case 0:
         return FloatingActionButton(
+          backgroundColor: Colors.grey,
           onPressed: () => _saveActivity(context),
           child: Icon(Icons.add),
         );

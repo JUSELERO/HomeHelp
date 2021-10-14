@@ -33,7 +33,10 @@ class MyApp extends StatelessWidget {
         title: 'HomeHelp App',
         initialRoute: 'login',
         theme: ThemeData(
-            primaryColor: primaryColor, scaffoldBackgroundColor: Colors.white),
+          primaryColor: primaryColor, 
+          scaffoldBackgroundColor: Colors.white,
+          buttonColor: primaryColor,
+        ),
         routes: {
           'login': (BuildContext context) => LoginPage(),
           'home': (BuildContext context) => HomePage(), ////deprecado

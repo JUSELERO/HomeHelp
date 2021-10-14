@@ -5,7 +5,7 @@ void mostrarAlerta(BuildContext context, String mensaje){
     context: context, 
     builder: (context) {
       return AlertDialog(
-        title: Text('Información Incorrecta'),
+        title: Text('Información'),
         content: Text(mensaje),
         actions: [
           TextButton(

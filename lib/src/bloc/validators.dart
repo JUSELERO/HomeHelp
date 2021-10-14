@@ -102,4 +102,15 @@ class Validators {
     }
   );
 
+
+  final validateLengthPrice = StreamTransformer<String,String>.fromHandlers(
+    handleData: (price,sink){
+      if(price.length >= 4){
+        sink.add(price);
+      } else {
+        sink.addError("El precio debe tener mas de 4 caracteres");
+      }
+    }
+  );
+
 }

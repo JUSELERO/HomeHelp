@@ -10,6 +10,7 @@ String activityModelToJson(ActivityModel data) => json.encode(data.toJson());
 
 class ActivityModel {
     ActivityModel({
+        this.id,
         this.title,
         this.description,
         this.state,
@@ -18,8 +19,10 @@ class ActivityModel {
         this.date,
         this.skill,
         this.postedBy,
+        this.namePosted,
     });
 
+    String id;
     String title;
     String description;
     int state;
@@ -28,8 +31,10 @@ class ActivityModel {
     String date;
     String skill;
     String postedBy;
+    String namePosted;
 
     factory ActivityModel.fromJson(Map<String, dynamic> json) => ActivityModel(
+        id: json["id"],
         title: json["title"],
         description: json["description"],
         state: json["state"],
@@ -38,9 +43,11 @@ class ActivityModel {
         date: json["date"],
         skill: json["skill"],
         postedBy: json["posted_by"],
+        namePosted: json["name_posted"]
     );
 
     Map<String, dynamic> toJson() => {
+        "id": id,
         "title": title,
         "description": description,
         "state": state,
@@ -49,5 +56,6 @@ class ActivityModel {
         "date": date,
         "skill": skill,
         "posted_by": postedBy,
+        "namePosted": namePosted
     };
 }

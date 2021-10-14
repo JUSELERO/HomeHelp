@@ -22,7 +22,7 @@ class EditProfilePage extends StatelessWidget {
     Size size = MediaQuery.of(context).size;
     final bloc = Provider.registerProfile(context);
     final perfil = RegisterProfileBloc;
-    _getProfileUser(bloc, context);
+    //_getProfileUser(bloc, context);
     return Scaffold(
       body: Background(
         child: SingleChildScrollView(
@@ -258,31 +258,31 @@ class EditProfilePage extends StatelessWidget {
     }
   }
 
-  _getProfileUser(RegisterProfileBloc bloc, BuildContext context) async {
-    _profileModel.uID = bloc.uID;
-    Map<String, dynamic> userData =
-        await _usuarioProvider.getProfileUser(_profileModel);
-    String dise = userData.values.toString();
-    dise = dise
-        .replaceAll("({", "{\"")
-        .replaceAll("})", "\"}")
-        .replaceAll(', ', '\",\"')
-        .replaceAll(': ', '\":\"')
-        .replaceAll('\"{', '\":\"');
-    print(JsonEncoder().convert(userData));
-    Map<String, dynamic> convertido;
-    convertido = jsonDecode(dise);
-    if (convertido.containsKey('address')) {
-      bloc.changeAddress(convertido['address']);
-      bloc.changeBirthdate(convertido['birthdate']);
-      bloc.changeDocumentNumber(convertido['document_number']);
-      bloc.changeName(convertido['firstname']);
-      bloc.changeLastName(convertido['lastname']);
-      bloc.changePhone(convertido['phone']);
-      bloc.changeAddress(convertido['user']);
-      print(_profileModel);
-    } else {
-      print('sucedio un error en la consulta de Data usuario');
-    }
-  }
+  // _getProfileUser(RegisterProfileBloc bloc, BuildContext context) async {
+  //   _profileModel.uID = bloc.uID;
+  //    userData =
+  //       await _usuarioProvider.getProfileUser(_profileModel);
+  //   String dise = userData.values.toString();
+  //   dise = dise
+  //       .replaceAll("({", "{\"")
+  //       .replaceAll("})", "\"}")
+  //       .replaceAll(', ', '\",\"')
+  //       .replaceAll(': ', '\":\"')
+  //       .replaceAll('\"{', '\":\"');
+  //   print(JsonEncoder().convert(userData));
+  //   Map<String, dynamic> convertido;
+  //   convertido = jsonDecode(dise);
+  //   if (convertido.containsKey('address')) {
+  //     bloc.changeAddress(convertido['address']);
+  //     bloc.changeBirthdate(convertido['birthdate']);
+  //     bloc.changeDocumentNumber(convertido['document_number']);
+  //     bloc.changeName(convertido['firstname']);
+  //     bloc.changeLastName(convertido['lastname']);
+  //     bloc.changePhone(convertido['phone']);
+  //     bloc.changeAddress(convertido['user']);
+  //     print(_profileModel);
+  //   } else {
+  //     print('sucedio un error en la consulta de Data usuario');
+  //   }
+  // }
 }

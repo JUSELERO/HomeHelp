@@ -31,6 +31,9 @@ class Background extends StatelessWidget {
             ),
           ),
           Container(
+            margin: EdgeInsets.only(top: size.height * 0.04),
+            height: double.infinity,
+            width: double.infinity,
             child: this.child,
           ),
         ]
