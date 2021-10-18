@@ -21,6 +21,7 @@ class ActivityModel {
         this.skill,
         this.postedBy,
         this.namePosted,
+        this.timeAgo,
     });
 
     String id;
@@ -34,6 +35,7 @@ class ActivityModel {
     String skill;
     String postedBy;
     String namePosted;
+    String timeAgo;
 
     factory ActivityModel.fromJson(Map<String, dynamic> json) => ActivityModel(
         id: json["id"],
@@ -46,7 +48,8 @@ class ActivityModel {
         date: json["date"],
         skill: json["skill"],
         postedBy: json["posted_by"],
-        namePosted: json["name_posted"]
+        namePosted: json["name_posted"],
+        timeAgo: json["timeAgo"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -60,6 +63,7 @@ class ActivityModel {
         "date": date,
         "skill": skill,
         "posted_by": postedBy,
-        "namePosted": namePosted
+        "namePosted": namePosted,
+        "timeAgo": timeAgo
     };
 }

@@ -198,7 +198,7 @@ class ProfilePage extends StatelessWidget {
             icon: Icon(Icons.logout),
             onPressed: (){
               _confirmLogout(context);
-            },
+            }
           ),
         ),
       ],

@@ -1,9 +1,11 @@
 import 'dart:collection';
+import 'dart:developer';
 import 'package:homehealth/src/models/activity_model.dart';
 import 'package:homehealth/src/preferencias_usuario/preferencias_usuario.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 export 'package:homehealth/src/models/activity_model.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 
 class ActivityProvider{
@@ -53,8 +55,14 @@ class ActivityProvider{
         myActivities.add(actividadTemp);
       }
     });
+    myActivities.sort((a,b) {
+      var aDate = DateTime.parse(a.creationDate);
+      var bDate = DateTime.parse(b.creationDate);
+      return bDate.compareTo(aDate);
+    });
     for (var item in myActivities) {
       item.namePosted = await this.getNamePostedBy(item.postedBy);
+      item.timeAgo = timeago.format(DateTime.parse(item.creationDate), locale: 'es');
     }
     return myActivities;
   }
@@ -75,10 +83,16 @@ class ActivityProvider{
         activities.add(actividadTemp);
       }
     });
-
+    activities.sort((a,b) {
+      var aDate = DateTime.parse(a.creationDate);
+      var bDate = DateTime.parse(b.creationDate);
+      return bDate.compareTo(aDate);
+    });
     for (var item in activities) {
       item.namePosted = await this.getNamePostedBy(item.postedBy);
+      item.timeAgo = timeago.format(DateTime.parse(item.creationDate), locale: 'es');
     }
+
     return activities;
   }
 

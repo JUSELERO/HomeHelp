@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:homehealth/src/models/activity_model.dart';
+import 'package:intl/intl.dart';
 
 class CardActivity extends StatelessWidget {
 
   ActivityModel activity;
-
+  final formatCurrency = new NumberFormat.simpleCurrency();
   CardActivity({ @required this.activity});
 
   @override
@@ -46,9 +47,12 @@ class CardActivity extends StatelessWidget {
                   subtitle: Column(
                     children: [
                       Container(
-                        margin: EdgeInsets.only(top: size.height * 0.01),
+                        margin: EdgeInsets.only(
+                          top: size.height * 0.01,
+                          left: size.width * 0.4
+                        ),
                         child: Text(
-                          activity.description,
+                          activity.timeAgo,
                           style: TextStyle(
                             fontSize: 17.0
                           ),
@@ -60,7 +64,7 @@ class CardActivity extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             Text(
-                              "${activity.pricePerHour} COP",
+                              '${formatCurrency.format(activity.pricePerHour)}',
                               style: TextStyle(
                                 fontSize: 15.0
                               ),
