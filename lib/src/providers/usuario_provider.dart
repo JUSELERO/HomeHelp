@@ -12,6 +12,8 @@ class UsuarioProvider {
   final String _urlProfile =
       'https://homehelp-7ac26-default-rtdb.firebaseio.com';
   final _prefs = new PreferenciasUsuario();
+  final String _urlSkill = 'https://homehelp-7ac26-default-rtdb.firebaseio.com/skills';
+  
 
   Future<Map<String, dynamic>> login(String email, String password) async {
     final authData = {
@@ -115,9 +117,46 @@ class UsuarioProvider {
       if(key == uidProfile){
         Map<String,dynamic> profile = HashMap.from(value);
         infoProfile = profile.values.first;
+        List skills = [];
+        log("infoProfile => $infoProfile");
+        log("infoProfile => ${infoProfile['skills']}");
+        if(!infoProfile["skills"].isEmpty) {
+          infoProfile["skills"].forEach((key,value){
+            var skillTemp = {};
+            skillTemp["skill"] = key;
+            skillTemp["score"] = value;
+            skills.add(skillTemp);
+          });
+          infoProfile["skills"] = skills;
+        }
+
       }
     });
+    if(!infoProfile["skills"].isEmpty) {
+      for (var item in infoProfile["skills"]) {
+        log("skill => ${item["skill"]}");
+        item = await getSkill(item);
+      }
+    }
     log("infoProfile => $infoProfile");
     return infoProfile;
+  }
+
+  getSkill(item) async {
+    final url = '$_urlSkill/${item["skill"]}.json';
+    final resp = await http.get(
+      Uri.parse(url),
+    );
+    Map<String, dynamic> decodedResp = json.decode(resp.body);
+    item["name"] = decodedResp["name"];
+    item["image"] = decodedResp["image"];
+
+    return item;
+  }
+
+  cerrarSesion()  {
+    _prefs.email = "";
+    _prefs.token = "";
+    _prefs.uid = "";
   }
 }

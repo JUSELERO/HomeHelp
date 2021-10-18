@@ -20,6 +20,7 @@ class ProfileModel {
   String birthdate;
   String user;
   String rol;
+  String bio;
 
   ProfileModel({
     this.uID,
@@ -32,6 +33,7 @@ class ProfileModel {
     this.birthdate,
     this.user,
     this.rol,
+    this.bio
   });
 
   factory ProfileModel.fromJson(Map<String, dynamic> json) => ProfileModel(
@@ -45,6 +47,7 @@ class ProfileModel {
         birthdate: json["birthdate"],
         user: json["user"],
         rol: json["rol"],
+        bio: json["bio"]
       );
 
   Map<String, dynamic> toJson() => {
@@ -58,5 +61,6 @@ class ProfileModel {
         "birthdate": birthdate,
         "user": user,
         "rol": rol,
+        "bio": bio,
       };
 }

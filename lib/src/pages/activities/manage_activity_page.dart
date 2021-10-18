@@ -249,6 +249,7 @@ class _ManageActivityPageState extends State<ManageActivityPage> {
   createActivity(ActivityBloc bloc, BuildContext context) async {
     print("Creando Actividad");
     _activityModel.date = bloc.date;
+    _activityModel.creationDate = (new DateTime.now()).toString();
     _activityModel.description = bloc.description;
     _activityModel.estimatedHours =  int.parse(bloc.hours);
     _activityModel.pricePerHour = int.parse(bloc.price);

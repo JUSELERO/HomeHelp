@@ -38,15 +38,15 @@ class _MainPageState extends State<MainPage> {
           items: [
             BottomNavigationBarItem(
               icon: Icon(Icons.home),
-              label: 'Mis Actividades',
+              label: '',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.task_alt),
-              label: 'Actividades',
+              label: '',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.account_circle_sharp),
-              label: 'Perfil',
+              label: '',
             ),
           ],
           onTap: _onItemTapped,

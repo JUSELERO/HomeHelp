@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'HomeHelp App',
-        initialRoute: 'login',
+        initialRoute: 'main',
         theme: ThemeData(
           primaryColor: primaryColor, 
           scaffoldBackgroundColor: Colors.white,

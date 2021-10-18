@@ -16,6 +16,7 @@ class ActivityModel {
         this.state,
         this.pricePerHour,
         this.estimatedHours,
+        this.creationDate,
         this.date,
         this.skill,
         this.postedBy,
@@ -28,6 +29,7 @@ class ActivityModel {
     int state;
     int pricePerHour;
     int estimatedHours;
+    String creationDate;
     String date;
     String skill;
     String postedBy;
@@ -40,6 +42,7 @@ class ActivityModel {
         state: json["state"],
         pricePerHour: json["price_per_hour"],
         estimatedHours: json["estimated_hours"],
+        creationDate: json["creation_date"],
         date: json["date"],
         skill: json["skill"],
         postedBy: json["posted_by"],
@@ -53,6 +56,7 @@ class ActivityModel {
         "state": state,
         "price_per_hour": pricePerHour,
         "estimated_hours": estimatedHours,
+        "creation_date": creationDate,
         "date": date,
         "skill": skill,
         "posted_by": postedBy,
