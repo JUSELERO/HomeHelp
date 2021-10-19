@@ -75,6 +75,7 @@ class _MainPageState extends State<MainPage> {
         return Container();
       case 2:
         return FloatingActionButton(
+          backgroundColor: Colors.grey,
           onPressed: () {
             Navigator.pushReplacementNamed(context, 'edit-profile');
           },

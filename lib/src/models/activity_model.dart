@@ -18,6 +18,7 @@ class ActivityModel {
         this.estimatedHours,
         this.creationDate,
         this.skill,
+        this.date,
         this.postedBy,
         this.namePosted,
         this.timeAgo,
@@ -31,6 +32,7 @@ class ActivityModel {
     int estimatedHours;
     String creationDate;
     dynamic skill;
+    String date;
     String postedBy;
     String namePosted;
     String timeAgo;
@@ -45,6 +47,7 @@ class ActivityModel {
         creationDate: json["creation_date"],
         skill: json["skill"],
         postedBy: json["posted_by"],
+        date: json["date"],
         namePosted: json["name_posted"],
         timeAgo: json["timeAgo"],
     );
@@ -58,6 +61,7 @@ class ActivityModel {
         "estimated_hours": estimatedHours,
         "creation_date": creationDate,
         "skill": skill,
+        "date" : date,
         "posted_by": postedBy,
         "namePosted": namePosted,
         "timeAgo": timeAgo

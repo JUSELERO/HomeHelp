@@ -129,7 +129,7 @@ class ProfilePage extends StatelessWidget {
               margin: EdgeInsets.symmetric(horizontal: size.width * 0.02),
               height: double.infinity,
               child: CircleAvatar(
-                  backgroundImage: AssetImage("assets/images/user.jpg")),
+                  backgroundImage: AssetImage("assets/images/jhon.jpg")),
               width: size.width * 0.3,
             ),
             Container(

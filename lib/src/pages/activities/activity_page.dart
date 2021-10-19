@@ -3,9 +3,12 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:homehealth/src/bloc/request_bloc.dart';
 import 'package:homehealth/src/models/activity_model.dart';
+import 'package:homehealth/src/models/request_model.dart';
 import 'package:homehealth/src/preferencias_usuario/preferencias_usuario.dart';
+import 'package:homehealth/src/providers/activity_provider.dart';
 import 'package:homehealth/src/providers/provider.dart';
 import 'package:homehealth/src/providers/usuario_provider.dart';
+import 'package:homehealth/src/utils/utils.dart';
 import 'package:intl/intl.dart';
 
 class ActivityPage extends StatelessWidget {
@@ -18,6 +21,9 @@ class ActivityPage extends StatelessWidget {
   ActivityModel actData;
   PreferenciasUsuario _prefs = new PreferenciasUsuario();
   RequestBloc _bloc;
+  RequestModel _requestModel = new RequestModel();
+  ActivityProvider _activityProvider = new ActivityProvider();
+
   @override
   Widget build(BuildContext context) {
     _bloc = Provider.request(context);
@@ -174,6 +180,24 @@ class ActivityPage extends StatelessWidget {
                                 }
                               })),
                     ],
+                  ),
+                  Column(
+                    children: [
+                      Container(
+                        child: Text("Fecha", style: _styleTextTitle),
+                        margin: EdgeInsets.symmetric(
+                          horizontal: _size.width * 0.03,
+                          vertical: _size.height * 0.005,
+                        ),
+                      ),
+                      Container(
+                          margin: EdgeInsets.symmetric(
+                            horizontal: _size.width * 0.03,
+                            vertical: _size.height * 0.005,
+                          ),
+                          child: Text(
+                              "${formatter.format(DateTime.parse(actData.date))}")),
+                    ],
                   )
                 ],
               ),
@@ -204,39 +228,59 @@ class ActivityPage extends StatelessWidget {
           return Container(
             child: AlertDialog(
               title: Text('Crear Solicitud'),
-              content: 
-                  Container(
-                    margin: EdgeInsets.symmetric(vertical:10.0),
-                    padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-                    width: _size.width * 0.8,
-                    decoration: BoxDecoration(
-                      color: Colors.grey.shade100,
-                      borderRadius: BorderRadius.circular(29)
-                    ),
-                    child: StreamBuilder<String>(
-                      stream: _bloc.descriptionStream,
-                      builder: (context, snapshot) {
-                        return TextField(
-                          onChanged: (value) => _bloc.changeDescription(value),
-                          decoration: InputDecoration(
-                            hintText: "Descripción de la Actividad",
+              content: Container(
+                margin: EdgeInsets.symmetric(vertical: 10.0),
+                padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                width: _size.width * 0.8,
+                decoration: BoxDecoration(
+                    color: Colors.grey.shade100,
+                    borderRadius: BorderRadius.circular(29)),
+                child: StreamBuilder<String>(
+                    stream: _bloc.descriptionStream,
+                    builder: (context, snapshot) {
+                      return TextField(
+                        onChanged: (value) => _bloc.changeDescription(value),
+                        decoration: InputDecoration(
+                            hintText: "Descripción de la Solicitud",
                             border: InputBorder.none,
                             icon: Icon(Icons.task, color: Colors.black12),
-                            errorText: snapshot.error
-                          ),
-                          keyboardType: TextInputType.name,
-                        );
-                      }
-                    ),
-                  ),
+                            errorText: snapshot.error),
+                        maxLines: 4,
+                        keyboardType: TextInputType.name,
+                      );
+                    }),
+              ),
               actions: [
                 TextButton(
                   onPressed: () => Navigator.of(context).pop(),
-                  child: Text('Crear'),
-                )
+                  child: Text("Cancelar"),
+                ),
+                StreamBuilder<Object>(
+                    stream: _bloc.formValidStream,
+                    builder: (context, snapshot) {
+                      return TextButton(
+                        onPressed: () => _createRequest(context),
+                        child: Text('Crear'),
+                      );
+                    })
               ],
             ),
           );
         });
+  }
+
+  _createRequest(BuildContext context) async {
+    _requestModel.description = _bloc.description;
+    _requestModel.requestby = _prefs.uid;
+    _requestModel.activity = actData.id;
+
+    final bool = await _activityProvider.createRequest(_requestModel);
+    if (bool) {
+      print("resp ---> $bool");
+      mostrarAlerta(context, "Actividad Creada con Exito");
+    } else {
+      print("resp ---> $bool");
+      mostrarAlerta(context, "No se pudo crear la actividad");
+    }
   }
 }

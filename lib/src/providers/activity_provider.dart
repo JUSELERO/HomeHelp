@@ -1,6 +1,7 @@
 import 'dart:collection';
 import 'dart:developer';
 import 'package:homehealth/src/models/activity_model.dart';
+import 'package:homehealth/src/models/request_model.dart';
 import 'package:homehealth/src/preferencias_usuario/preferencias_usuario.dart';
 import 'package:homehealth/src/providers/usuario_provider.dart';
 import 'package:http/http.dart' as http;
@@ -130,6 +131,22 @@ class ActivityProvider{
       }
     });
     return firstname;
+  }
+
+  createRequest(RequestModel request) async {
+    final url = 'https://homehelp-7ac26-default-rtdb.firebaseio.com/requests/.json';
+    final resp = await http.post(
+      Uri.parse(url),
+      body: requestModelToJson(request)
+    );
+
+    Map<String, dynamic> decodedResp = json.decode(resp.body);
+    print("decodeResp ---> $decodedResp");
+    if (decodedResp.containsKey('name')) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
 }

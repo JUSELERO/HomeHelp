@@ -154,6 +154,34 @@ class _ManageActivityPageState extends State<ManageActivityPage> {
                     color: Colors.grey.shade100,
                     borderRadius: BorderRadius.circular(29)
                   ),
+                  child: StreamBuilder(
+                    stream: _bloc.dateStream,
+                    builder: (context, snapshot) {
+                      return TextField(
+                        onChanged: (value) => {},
+                        controller: _textEditingController,
+                        keyboardType: TextInputType.text,
+                        decoration: InputDecoration(
+                        icon: Icon(Icons.calendar_today, color: Colors.black12),
+                          hintText: "Fecha de realización",
+                          border: InputBorder.none,
+                        ),
+                        onTap: () {
+                          FocusScope.of(context).requestFocus(new FocusNode());
+                          _selectDate(context, _bloc);
+                        },
+                      );
+                    }
+                  )
+                ),
+                Container(
+                  margin: EdgeInsets.symmetric(vertical: 10),
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                  width: size.width * 0.8,
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade100,
+                    borderRadius: BorderRadius.circular(29)
+                  ),
                   child: StreamBuilder<Object>(
                     stream: _bloc.skillStream,
                     builder: (context, snapshot) {
@@ -221,6 +249,7 @@ class _ManageActivityPageState extends State<ManageActivityPage> {
     _activityModel.description = bloc.description;
     _activityModel.estimatedHours =  int.parse(bloc.hours);
     _activityModel.pricePerHour = int.parse(bloc.price);
+    _activityModel.date = bloc.date;
     _activityModel.title = bloc.name;
     _activityModel.skill = bloc.skill;
     _activityModel.state = "Sin Asignar";
@@ -232,6 +261,21 @@ class _ManageActivityPageState extends State<ManageActivityPage> {
     } else {
       print("resp ---> $resp");
       mostrarAlerta(context, "No se pudo crear la actividad");
+    }
+  }
+
+  void _selectDate(BuildContext context,ActivityBloc bloc) async {
+    DateTime picked = await showDatePicker(
+      context: context,
+      initialDate: new DateTime.now(),
+      firstDate: new DateTime(1900),
+      lastDate: new DateTime(2025),
+      locale: Locale('es', 'ES')
+    );
+    if (picked != null) {
+      final formatDate = new DateFormat("dd-MM-yyyy");
+      bloc.changeDate(picked.toString());
+      _textEditingController.text = formatDate.format(picked);
     }
   }
 }
