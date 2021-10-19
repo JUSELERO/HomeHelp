@@ -1,7 +1,10 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:homehealth/src/bloc/request_bloc.dart';
 import 'package:homehealth/src/models/activity_model.dart';
+import 'package:homehealth/src/preferencias_usuario/preferencias_usuario.dart';
+import 'package:homehealth/src/providers/provider.dart';
 import 'package:homehealth/src/providers/usuario_provider.dart';
 import 'package:intl/intl.dart';
 
@@ -12,9 +15,13 @@ class ActivityPage extends StatelessWidget {
   final _usuarioProvider = new UsuarioProvider();
   final formatCurrency = new NumberFormat.simpleCurrency();
   final DateFormat formatter = DateFormat('dd-MM-yyyy');
+  ActivityModel actData;
+  PreferenciasUsuario _prefs = new PreferenciasUsuario();
+  RequestBloc _bloc;
   @override
   Widget build(BuildContext context) {
-    final ActivityModel actData = ModalRoute.of(context).settings.arguments;
+    _bloc = Provider.request(context);
+    actData = ModalRoute.of(context).settings.arguments;
     _size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
@@ -174,6 +181,62 @@ class ActivityPage extends StatelessWidget {
           ),
         ),
       ),
+      floatingActionButton: _crearBoton(context),
     );
+  }
+
+  Widget _crearBoton(BuildContext context) {
+    if (actData.postedBy != _prefs.uid) {
+      return FloatingActionButton(
+          onPressed: () => _showModalCreateRequest(context),
+          child: Icon(
+            Icons.add,
+          ),
+          backgroundColor: Colors.grey);
+    }
+    return Container();
+  }
+
+  void _showModalCreateRequest(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return Container(
+            child: AlertDialog(
+              title: Text('Crear Solicitud'),
+              content: 
+                  Container(
+                    margin: EdgeInsets.symmetric(vertical:10.0),
+                    padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+                    width: _size.width * 0.8,
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade100,
+                      borderRadius: BorderRadius.circular(29)
+                    ),
+                    child: StreamBuilder<String>(
+                      stream: _bloc.descriptionStream,
+                      builder: (context, snapshot) {
+                        return TextField(
+                          onChanged: (value) => _bloc.changeDescription(value),
+                          decoration: InputDecoration(
+                            hintText: "Descripción de la Actividad",
+                            border: InputBorder.none,
+                            icon: Icon(Icons.task, color: Colors.black12),
+                            errorText: snapshot.error
+                          ),
+                          keyboardType: TextInputType.name,
+                        );
+                      }
+                    ),
+                  ),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: Text('Crear'),
+                )
+              ],
+            ),
+          );
+        });
   }
 }

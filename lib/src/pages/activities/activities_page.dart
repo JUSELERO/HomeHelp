@@ -21,7 +21,6 @@ class ActivitiesPage extends StatelessWidget {
       future: _activityProvider.getActivities(),
       builder: (BuildContext context, AsyncSnapshot<List<ActivityModel>> snapshot){
         if(snapshot.hasData){
-          print("snapshot.data ---> ${snapshot.data}");
           _activities = snapshot.data;
           return ListView.builder(
             padding: EdgeInsets.all(10.0),

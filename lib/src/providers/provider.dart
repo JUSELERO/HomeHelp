@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:homehealth/src/bloc/activity_bloc.dart';
 import 'package:homehealth/src/bloc/login_bloc.dart';
 import 'package:homehealth/src/bloc/register_profile_bloc.dart';
+import 'package:homehealth/src/bloc/request_bloc.dart';
 
 
 
@@ -37,6 +38,12 @@ class Provider extends InheritedWidget {
 
   static ActivityBloc activity(BuildContext context){
     return context.dependOnInheritedWidgetOfExactType<Provider>().activityBloc;
+  }
+  
+  final requestBloc = RequestBloc();
+
+  static RequestBloc request(BuildContext context){
+    return context.dependOnInheritedWidgetOfExactType<Provider>().requestBloc;
   }
 
 }
