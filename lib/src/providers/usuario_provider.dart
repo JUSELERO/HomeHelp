@@ -143,15 +143,31 @@ class UsuarioProvider {
   }
 
   getSkill(item) async {
-    final url = '$_urlSkill/${item["skill"]}.json';
-    final resp = await http.get(
-      Uri.parse(url),
-    );
-    Map<String, dynamic> decodedResp = json.decode(resp.body);
-    item["name"] = decodedResp["name"];
-    item["image"] = decodedResp["image"];
-
-    return item;
+    log("item => $item");
+    String url = "";
+    if(item is int){
+      log("entrando al if");
+      url = '$_urlSkill/$item.json';
+      final resp = await http.get(
+        Uri.parse(url),
+      );
+      Map<String, dynamic> decodedResp = json.decode(resp.body);
+      var newItem = {};
+      newItem["skill"] = item;
+      newItem["name"] = decodedResp["name"];
+      log("newItem => $newItem");
+      return newItem;
+    } else {
+      log("entrando al else");
+      url = '$_urlSkill/${item["skill"]}.json';
+      final resp = await http.get(
+        Uri.parse(url),
+      );
+      Map<String, dynamic> decodedResp = json.decode(resp.body);
+      item["name"] = decodedResp["name"];
+      item["image"] = decodedResp["image"];
+      return item;
+    }
   }
 
   cerrarSesion()  {

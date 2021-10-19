@@ -27,12 +27,12 @@ class ActivityModel {
     String id;
     String title;
     String description;
-    int state;
+    String state;
     int pricePerHour;
     int estimatedHours;
     String creationDate;
     String date;
-    String skill;
+    dynamic skill;
     String postedBy;
     String namePosted;
     String timeAgo;

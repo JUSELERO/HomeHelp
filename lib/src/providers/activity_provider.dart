@@ -2,6 +2,7 @@ import 'dart:collection';
 import 'dart:developer';
 import 'package:homehealth/src/models/activity_model.dart';
 import 'package:homehealth/src/preferencias_usuario/preferencias_usuario.dart';
+import 'package:homehealth/src/providers/usuario_provider.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 export 'package:homehealth/src/models/activity_model.dart';
@@ -12,6 +13,7 @@ class ActivityProvider{
 
   final String _url = 'https://homehelp-7ac26-default-rtdb.firebaseio.com//activities.json';
   final _prefs = new PreferenciasUsuario();
+  final _usuarioProvider = new UsuarioProvider();
   List<ActivityModel> myActivities = [];
   List<ActivityModel> activities = [];
 
@@ -62,6 +64,7 @@ class ActivityProvider{
     });
     for (var item in myActivities) {
       item.namePosted = await this.getNamePostedBy(item.postedBy);
+      log("item skill => ${item.skill}");
       item.timeAgo = timeago.format(DateTime.parse(item.creationDate), locale: 'es');
     }
     return myActivities;

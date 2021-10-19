@@ -255,7 +255,7 @@ class _ManageActivityPageState extends State<ManageActivityPage> {
     _activityModel.pricePerHour = int.parse(bloc.price);
     _activityModel.title = bloc.name;
     _activityModel.skill = bloc.skill;
-    _activityModel.state = 1;
+    _activityModel.state = "Sin Asignar";
     
     bool resp = await _activityProvider.createActivity(_activityModel);
     if (resp) {

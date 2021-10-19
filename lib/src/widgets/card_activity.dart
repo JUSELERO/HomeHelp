@@ -31,7 +31,7 @@ class CardActivity extends StatelessWidget {
                       ),
                     ],
                   ),
-                  onTap: () {},
+                  onTap: () => Navigator.pushNamed(context, "activity",arguments: activity),
                   title: Container(
                     margin: EdgeInsets.all(size.height * 0.01),
                     child: Text(

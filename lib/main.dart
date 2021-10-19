@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:homehealth/src/pages/activities/activities_page.dart';
+import 'package:homehealth/src/pages/activities/activity_page.dart';
 import 'package:homehealth/src/pages/activities/manage_activity_page.dart';
 import 'package:homehealth/src/pages/main_page.dart';
 
@@ -46,7 +47,8 @@ class MyApp extends StatelessWidget {
           'main': (BuildContext context) => MainPage(),
           'my-activites': (BuildContext context) => MyActivitiesPage(),
           'activities': (BuildContext context) => ActivitiesPage(),
-          "manage-activity": (BuildContext context) => ManageActivityPage()
+          "manage-activity": (BuildContext context) => ManageActivityPage(),
+          "activity": (BuildContext context) => ActivityPage()
         },
         localizationsDelegates: [
           GlobalMaterialLocalizations.delegate,
