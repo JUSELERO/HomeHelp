@@ -138,7 +138,6 @@ class UsuarioProvider {
         item = await getSkill(item);
       }
     }
-    log("infoProfile => $infoProfile");
     return infoProfile;
   }
 

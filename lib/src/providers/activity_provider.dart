@@ -99,6 +99,22 @@ class ActivityProvider{
     return activities;
   }
 
+  getSkills() async {
+    final url = 'https://homehelp-7ac26-default-rtdb.firebaseio.com/skills/.json';
+    final resp = await http.get(
+      Uri.parse(url)
+  );
+    Map<String,dynamic> responseDecoded = json.decode(resp.body);
+    var skills = [];
+    responseDecoded.forEach((key, value) { 
+      var skill = {};
+      skill["name"] = value["name"];
+      skill["id"] = key;
+      skills.add(skill);
+    });
+    return skills;
+  }
+
   Future<String> getNamePostedBy(String idProfile) async {
     print("idProfile ----> $idProfile");
     String firstname = "";

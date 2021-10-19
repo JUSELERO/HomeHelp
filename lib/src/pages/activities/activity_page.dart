@@ -144,24 +144,6 @@ class ActivityPage extends StatelessWidget {
                   Column(
                     children: [
                       Container(
-                        child: Text("Fecha", style: _styleTextTitle),
-                        margin: EdgeInsets.symmetric(
-                          horizontal: _size.width * 0.03,
-                          vertical: _size.height * 0.005,
-                        ),
-                      ),
-                      Container(
-                          margin: EdgeInsets.symmetric(
-                            horizontal: _size.width * 0.03,
-                            vertical: _size.height * 0.005,
-                          ),
-                          child: Text(
-                              "${formatter.format(DateTime.parse(actData.date))}")),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      Container(
                         child: Text("Skill", style: _styleTextTitle),
                         margin: EdgeInsets.symmetric(
                           horizontal: _size.width * 0.03,
