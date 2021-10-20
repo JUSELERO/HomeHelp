@@ -1,69 +1,61 @@
 // To parse this JSON data, do
 //
-//     final activityModel = activityModelFromJson(jsonString);
+//     final activity = activityFromJson(jsonString);
 
 import 'dart:convert';
 
-ActivityModel activityModelFromJson(String str) => ActivityModel.fromJson(json.decode(str));
+Activity activityFromJson(String str) => Activity.fromJson(json.decode(str));
 
-String activityModelToJson(ActivityModel data) => json.encode(data.toJson());
+String activityToJson(Activity data) => json.encode(data.toJson());
 
-class ActivityModel {
-    ActivityModel({
+class Activity {
+    Activity({
         this.id,
         this.title,
         this.description,
         this.state,
-        this.pricePerHour,
-        this.estimatedHours,
-        this.creationDate,
-        this.skill,
+        this.priceHour,
+        this.hours,
+        this.priceTotal,
         this.date,
-        this.postedBy,
-        this.namePosted,
-        this.timeAgo,
+        this.skillId,
+        this.profileId,
     });
 
     String id;
     String title;
     String description;
     String state;
-    int pricePerHour;
-    int estimatedHours;
-    String creationDate;
-    dynamic skill;
+    int priceHour;
+    int hours;
+    int priceTotal;
     String date;
-    String postedBy;
-    String namePosted;
-    String timeAgo;
+    String skillId;
+    String profileId;
 
-    factory ActivityModel.fromJson(Map<String, dynamic> json) => ActivityModel(
-        id: json["id"],
+    factory Activity.fromJson(Map<String, dynamic> json) => Activity(
+        id: json["_id"],
         title: json["title"],
         description: json["description"],
         state: json["state"],
-        pricePerHour: json["price_per_hour"],
-        estimatedHours: json["estimated_hours"],
-        creationDate: json["creation_date"],
-        skill: json["skill"],
-        postedBy: json["posted_by"],
+        priceHour: json["price_hour"],
+        hours: json["hours"],
+        priceTotal: json["price_total"],
         date: json["date"],
-        namePosted: json["name_posted"],
-        timeAgo: json["timeAgo"],
+        skillId: json["skill_id"],
+        profileId: json["profile_id"],
     );
 
     Map<String, dynamic> toJson() => {
-        "id": id,
+        "_id": id,
         "title": title,
         "description": description,
         "state": state,
-        "price_per_hour": pricePerHour,
-        "estimated_hours": estimatedHours,
-        "creation_date": creationDate,
-        "skill": skill,
-        "date" : date,
-        "posted_by": postedBy,
-        "namePosted": namePosted,
-        "timeAgo": timeAgo
+        "price_hour": priceHour,
+        "hours": hours,
+        "price_total": priceTotal,
+        "date": date,
+        "skill_id": skillId,
+        "profile_id": profileId,
     };
 }

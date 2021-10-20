@@ -1,29 +1,37 @@
 // To parse this JSON data, do
 //
-//     final skillModel = skillModelFromJson(jsonString);
+//     final skill = skillFromJson(jsonString);
 
 import 'dart:convert';
 
-SkillModel skillModelFromJson(String str) => SkillModel.fromJson(json.decode(str));
+Skill skillFromJson(String str) => Skill.fromJson(json.decode(str));
 
-String skillModelToJson(SkillModel data) => json.encode(data.toJson());
+String skillToJson(Skill data) => json.encode(data.toJson());
 
-class SkillModel {
-    SkillModel({
+class Skill {
+    Skill({
+        this.id,
         this.name,
-        this.score,
+        this.description,
+        this.image,
     });
 
+    String id;
     String name;
-    int score;
+    String description;
+    String image;
 
-    factory SkillModel.fromJson(Map<String, dynamic> json) => SkillModel(
+    factory Skill.fromJson(Map<String, dynamic> json) => Skill(
+        id: json["_id"],
         name: json["name"],
-        score: json["score"],
+        description: json["description"],
+        image: json["image"],
     );
 
     Map<String, dynamic> toJson() => {
+        "_id": id,
         "name": name,
-        "score": score,
+        "description": description,
+        "image": image,
     };
 }

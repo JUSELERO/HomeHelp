@@ -1,33 +1,37 @@
 // To parse this JSON data, do
 //
-//     final requestModel = requestModelFromJson(jsonString);
+//     final request = requestFromJson(jsonString);
 
 import 'dart:convert';
 
-RequestModel requestModelFromJson(String str) => RequestModel.fromJson(json.decode(str));
+Request requestFromJson(String str) => Request.fromJson(json.decode(str));
 
-String requestModelToJson(RequestModel data) => json.encode(data.toJson());
+String requestToJson(Request data) => json.encode(data.toJson());
 
-class RequestModel {
-    RequestModel({
+class Request {
+    Request({
+        this.id,
         this.description,
-        this.activity,
-        this.requestby,
-    }); 
+        this.profileId,
+        this.activityId,
+    });
 
+    String id;
     String description;
-    String activity;
-    String requestby;
+    String profileId;
+    String activityId;
 
-    factory RequestModel.fromJson(Map<String, dynamic> json) => RequestModel(
+    factory Request.fromJson(Map<String, dynamic> json) => Request(
+        id: json["_id"],
         description: json["description"],
-        activity: json["activity"],
-        requestby: json["requestby"],
+        profileId: json["profile_id"],
+        activityId: json["activity_id"],
     );
 
     Map<String, dynamic> toJson() => {
+        "_id": id,
         "description": description,
-        "activity": activity,
-        "requestby": requestby,
+        "profile_id": profileId,
+        "activity_id": activityId,
     };
 }
